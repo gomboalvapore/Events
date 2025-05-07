@@ -1,0 +1,146 @@
+.grid-container {
+    display: grid;
+    /* 9 columns: Player Name, Skins, Energy, Ascension G., Artifact, seeds, GoE Sparks, Art.Coin, Reset Button */
+    grid-template-columns: 1.2fr 0.7fr 0.8fr 0.8fr 0.8fr 0.6fr 0.8fr 0.8fr 0.4fr;
+    grid-template-rows: repeat(8, 1fr); /* 8 righe (4 in index.html + 4 caricate dinamicamente) */
+    width: 95%; /* Larghezza aumentata per accogliere la nuova colonna */
+    margin: 20px auto;
+    border: 1px solid #ccc;
+}
+
+.grid-cell {
+    border: 1px solid #eee;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: hidden; /* Prevent content overflow */
+}
+
+.cell-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.editable-text {
+    width: 100%;
+    box-sizing: border-box;
+    /* Rimuovi lo sfondo di default della textarea se presente */
+    background-color: white;
+}
+
+/* Stile per la casella di testo "Nome Player" */
+.player-name-input {
+    font-family: 'Georgia', serif; /* O un altro font elegante di tua scelta */
+    font-size: 1.3em; /* Dimensione del font aumentata */
+}
+
+/* Stili per i dropdown "Skins" */
+.skins-dropdown {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+}
+
+/* Stili per i dropdown "Energy" */
+.energy-dropdown {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+}
+
+/* Stili per i dropdown "Glyph" */
+.glyph-dropdown {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+}
+
+/* Stili per i dropdown "Artifact" */
+.artifact-dropdown {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+}
+
+/* Stile per l'opzione "100", "14000", "20" e "140" nei dropdown */
+.skins-dropdown option[style*="background-color: #b2d8b2;"],
+.energy-dropdown option[style*="background-color: #b2d8b2;"],
+.glyph-dropdown option[style*="background-color: #b2d8b2;"],
+.artifact-dropdown option[style*="background-color: #b2d8b2;"] {
+    background-color: #b2d8b2 !important; /* Usa !important per assicurare che lo stile venga applicato */
+}
+
+/* Mantiene lo sfondo dopo la selezione per le opzioni specifiche */
+.skins-dropdown:has(option[value="100"]:checked),
+.energy-dropdown:has(option[value="14000"]:checked),
+.glyph-dropdown:has(option[value="20"]:checked),
+.artifact-dropdown:has(option[value="140"]:checked) {
+    background-color: #b2d8b2;
+    color: black; /* Assicura che il testo sia leggibile */
+}
+
+
+/* Stili per l'intestazione "Tournament of Power" */
+#main-title {
+    color: #007bff;
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+    font-family: sans-serif;
+}
+
+/* Stili per il tasto Reset */
+.reset-button {
+    padding: 5px 10px;
+    cursor: pointer;
+    /* Cambia il colore di sfondo a #887468 */
+    background-color: #887468;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9em;
+    width: 100%; /* Riempi la cella */
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.reset-button:hover {
+    /* Cambia il colore al passaggio del mouse a una tonalità leggermente più scura */
+    background-color: #604c42; /* Una tonalità più scura di #887468 */
+}
+
+/* Centra il contenuto della cella del tasto Reset */
+.grid-cell.reset-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px; /* Padding ridotto per la cella del tasto */
+}
+
+
+/* Stili specifici per colorare le righe (aggiornati per 8 righe e 9 colonne) */
+/* Pattern: 4 righe con colori alternati, ripetuto */
+/* Riga 1 e 5 */
+.grid-container > div:nth-child(n+1):nth-child(-n+9),
+.grid-container > div:nth-child(n+37):nth-child(-n+45) {
+    background-color: #dae6ed;
+}
+
+/* Riga 2 e 6 */
+.grid-container > div:nth-child(n+10):nth-child(-n+18),
+.grid-container > div:nth-child(n+46):nth-child(-n+54) {
+    background-color: #e8f5e9;
+}
+
+/* Riga 3 e 7 */
+.grid-container > div:nth-child(n+19):nth-child(-n+27),
+.grid-container > div:nth-child(n+55):nth-child(-n+63) {
+    background-color: #f0f4c3;
+}
+
+/* Riga 4 e 8 */
+.grid-container > div:nth-child(n+28):nth-child(-n+36),
+.grid-container > div:nth-child(n+64):nth-child(-n+72) {
+    background-color: #fce4ec;
+}
