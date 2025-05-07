@@ -181,40 +181,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get the grid container
     const gridContainer = document.querySelector('.grid-container');
 
-    // Fetch the additional rows HTML
-    fetch('additional_rows.html')
-        .then(response => {
-             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.text();
-        })
-        .then(html => {
-            // Create a temporary div to parse the fetched HTML
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
-
-            // Get the content of the div with id="additional-rows"
-            const additionalRowsContent = tempDiv.querySelector('#additional-rows');
-
-            if (gridContainer && additionalRowsContent) {
-                // Append the CHILDREN of additionalRowsContent to the grid container
-                 while (additionalRowsContent.firstChild) {
-                    gridContainer.appendChild(additionalRowsContent.firstChild);
+    // Function to fetch and append content from an HTML file
+    const fetchAndAppendContent = (filename) => {
+        return fetch(filename)
+            .then(response => {
+                 if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-            } else {
-                console.error('Grid container or additional rows content not found.');
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching additional rows:', error);
-        })
+                return response.text();
+            })
+            .then(html => {
+                // Create a temporary div to parse the fetched HTML
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+
+                // Get the content of the main div within the fetched file
+                const contentToAppend = tempDiv.firstElementChild; // Assuming the first element is the main container div
+
+                if (gridContainer && contentToAppend) {
+                     while (contentToAppend.firstChild) {
+                        gridContainer.appendChild(contentToAppend.firstChild);
+                    }
+                } else {
+                    console.error(`Grid container or content from ${filename} not found.`);
+                }
+            })
+            .catch(error => {
+                console.error(`Error fetching content from ${filename}:`, error);
+            });
+    };
+
+    // Fetch and append content from both additional files in sequence
+    fetchAndAppendContent('additional_rows.html')
+        .then(() => fetchAndAppendContent('more_additional_rows.html')) // Fetch the second file after the first is done
         .finally(() => {
-            // IMPORTANT: Process all grid elements AFTER dynamic content is potentially loaded and appended
+            // IMPORTANT: Process all grid elements AFTER all dynamic content is loaded and appended
             processAllGridElements();
         });
-
-    // Removed the initial call to initializeGridElements here.
-    // All processing happens in the finally block after the fetch.
 
 });

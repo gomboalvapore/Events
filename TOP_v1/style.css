@@ -2,7 +2,7 @@
     display: grid;
     /* 9 columns: Player Name, Skins, Energy, Ascension G., Artifact, seeds, GoE Sparks, Art.Coin, Reset Button */
     grid-template-columns: 1.2fr 0.7fr 0.8fr 0.8fr 0.8fr 0.6fr 0.8fr 0.8fr 0.4fr;
-    grid-template-rows: repeat(8, 1fr); /* 8 righe (4 in index.html + 4 caricate dinamicamente) */
+    grid-template-rows: repeat(12, 1fr); /* 12 righe totali (4 in index.html + 8 caricate dinamicamente) */
     width: 95%; /* Larghezza aumentata per accogliere la nuova colonna */
     margin: 20px auto;
     border: 1px solid #ccc;
@@ -118,29 +118,32 @@
     padding: 5px; /* Padding ridotto per la cella del tasto */
 }
 
-
-/* Stili specifici per colorare le righe (aggiornati per 8 righe e 9 colonne) */
+/* Stili specifici per colorare le righe (aggiornati per 12 righe e 9 colonne) */
 /* Pattern: 4 righe con colori alternati, ripetuto */
-/* Riga 1 e 5 */
+/* Riga 1, 5, 9 */
 .grid-container > div:nth-child(n+1):nth-child(-n+9),
-.grid-container > div:nth-child(n+37):nth-child(-n+45) {
+.grid-container > div:nth-child(n+37):nth-child(-n+45),
+.grid-container > div:nth-child(n+73):nth-child(-n+81) {
     background-color: #dae6ed;
 }
 
-/* Riga 2 e 6 */
+/* Riga 2, 6, 10 */
 .grid-container > div:nth-child(n+10):nth-child(-n+18),
-.grid-container > div:nth-child(n+46):nth-child(-n+54) {
+.grid-container > div:nth-child(n+46):nth-child(-n+54),
+.grid-container > div:nth-child(n+82):nth-child(-n+90) {
     background-color: #e8f5e9;
 }
 
-/* Riga 3 e 7 */
+/* Riga 3, 7, 11 */
 .grid-container > div:nth-child(n+19):nth-child(-n+27),
-.grid-container > div:nth-child(n+55):nth-child(-n+63) {
+.grid-container > div:nth-child(n+55):nth-child(-n+63),
+.grid-container > div:nth-child(n+91):nth-child(-n+99) {
     background-color: #f0f4c3;
 }
 
-/* Riga 4 e 8 */
+/* Riga 4, 8, 12 */
 .grid-container > div:nth-child(n+28):nth-child(-n+36),
-.grid-container > div:nth-child(n+64):nth-child(-n+72) {
+.grid-container > div:nth-child(n+64):nth-child(-n+72),
+.grid-container > div:nth-child(n+100):nth-child(-n+108) {
     background-color: #fce4ec;
 }
