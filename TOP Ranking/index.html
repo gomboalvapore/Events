@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T.o.P. Ranking Notes</title>
+    <style>
+        body {
+            font-family: sans-serif; /* Carattere leggibile per tutto il corpo */
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4; /* Sfondo generale tenue */
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 0; /* Nessun margine sopra il titolo principale */
+            margin-bottom: 20px; /* Spazio sotto il titolo */
+            font-size: 2.5em; /* Rendi il titolo molto grande */
+        }
+
+        /* Stili per il contenitore scrollabile delle tabelle */
+        .table-container {
+             overflow-x: auto; /* Rendi il contenitore scrollabile orizzontalmente se necessario */
+             margin: 0 auto; /* Centra il contenitore */
+             width: 98%; /* Larghezza del contenitore */
+             box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Ombra leggera */
+             background-color: #fff; /* Sfondo bianco per la tabella */
+             padding: 10px; /* Padding interno */
+             box-sizing: border-box; /* Includi padding nella larghezza */
+        }
+
+        table {
+            border-collapse: collapse; /* Unisce i bordi delle celle */
+            width: 100%; /* La tabella occupa il 100% del contenitore */
+            margin: 0 auto; /* Centra la tabella nel contenitore */
+            font-size: 0.9em; /* Riduci leggermente la dimensione generale del testo della tabella per farla stare */
+        }
+
+        th, td {
+            border: 1px solid #ddd; /* Bordo leggero per le celle */
+            padding: 6px; /* Spazio interno ridotto */
+            text-align: center; /* Centra il testo */
+            white-space: nowrap; /* Evita che il testo nelle celle vada a capo */
+        }
+
+        th {
+            background-color: #e9ecef; /* Sfondo grigio chiaro per l'intestazione */
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Colori tenui di sfondo per le prime 4 colonne di TUTTE le righe dati (class="data-row") */
+        .data-row td:nth-child(1) { background-color: #e0f7fa; /* Azzurro tenue */ }
+        .data-row td:nth-child(2) { background-color: #fff9c4; /* Giallo tenue */ }
+        .data-row td:nth-child(3) { background-color: #f8bbd0; /* Rosa tenue */ }
+        .data-row td:nth-child(4) { background-color: #c8e6c9; /* Verde tenue */ }
+
+
+        /* Stile per i campi di input */
+        td input[type="text"] {
+            /* Larghezza calcolata per lasciare spazio al numero di riga */
+            width: calc(100% - 30px); /* Riduci la larghezza per fare spazio al numero */
+            box-sizing: border-box; /* Include padding e border nella larghezza */
+            padding: 4px; /* Padding ridotto */
+            border: 1px solid #ccc;
+            text-align: center; /* Centra il testo nell'input */
+            background-color: white; /* Sfondo bianco solo dove scrivi */
+            font-size: 1em; /* Font size base per gli input */
+            display: inline-block; /* Permette al numero di riga di stare accanto */
+            vertical-align: middle; /* Allinea verticalmente */
+            margin-right: 5px; /* Spazio tra input e numero di riga */
+        }
+
+        /* Aumenta la dimensione del testo solo nell'input della prima colonna delle righe dati */
+        .data-row td:nth-child(1) input[type="text"] {
+            font-size: 140%; /* Aumenta la dimensione del testo del 40% */
+        }
+
+         /* Stile per le caselle di testo calcolate (span dentro td) */
+        td span {
+            display: block; /* Rendi lo span un blocco per riempire la cella e centrarlo meglio */
+            padding: 4px; /* Padding ridotto */
+            font-weight: bold; /* Rendi il testo più visibile */
+            color: inherit; /* Eredita il colore del testo, per poterlo cambiare via JS */
+        }
+
+        /* Stile per il numero identificativo della riga */
+        .row-number {
+            font-size: 0.8em; /* Dimensione testo numero */
+            font-weight: normal;
+            color: #555;
+            display: inline-block; /* Permette di stare accanto all'input */
+            vertical-align: middle; /* Allinea verticalmente */
+            width: 20px; /* Larghezza fissa per il numero */
+            text-align: left; /* Allinea il numero a sinistra */
+        }
+
+
+        /* Stile per la cella del pulsante Reset */
+        .reset-cell { /* Usiamo una classe per coerenza */
+             text-align: center;
+             vertical-align: middle; /* Centra verticalmente il contenuto */
+             background-color: #f2f2f2; /* Sfondo leggero */
+        }
+
+        /* Stile per il pulsante Reset */
+        .reset-button { /* Usiamo una classe per coerenza */
+            padding: 4px 8px; /* Padding ridotto */
+            background-color: #dc3545; /* Rosso */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em; /* Font size ridotto */
+            transition: background-color 0.3s ease;
+        }
+
+        .reset-button:hover {
+            background-color: #c82333; /* Rosso più scuro al passaggio del mouse */
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>T.o.P. ranking notes</h1>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>player name</th>
+                    <th>my points</th>
+                    <th>opponent 1</th>
+                    <th>opponent 2</th>
+                    <th>delta o1</th>
+                    <th>delta o2</th>
+                    <th></th> </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr class="data-row" data-row-suffix="_row1" data-row-number="1">
+                    <td><input type="text" id="playerName_row1" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row1" value="0"></td>
+                    <td><input type="text" id="opponent1_row1" value="0"></td>
+                    <td><input type="text" id="opponent2_row1" value="0"></td>
+                    <td id="cellDeltaO1_row1"><span id="deltaO1_row1">0</span></td>
+                    <td id="cellDeltaO2_row1"><span id="deltaO2_row1">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row1">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row2" data-row-number="2">
+                    <td><input type="text" id="playerName_row2" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row2" value="0"></td>
+                    <td><input type="text" id="opponent1_row2" value="0"></td>
+                    <td><input type="text" id="opponent2_row2" value="0"></td>
+                    <td id="cellDeltaO1_row2"><span id="deltaO1_row2">0</span></td>
+                    <td id="cellDeltaO2_row2"><span id="deltaO2_row2">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row2">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row3" data-row-number="3">
+                    <td><input type="text" id="playerName_row3" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row3" value="0"></td>
+                    <td><input type="text" id="opponent1_row3" value="0"></td>
+                    <td><input type="text" id="opponent2_row3" value="0"></td>
+                    <td id="cellDeltaO1_row3"><span id="deltaO1_row3">0</span></td>
+                    <td id="cellDeltaO2_row3"><span id="deltaO2_row3">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row3">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row4" data-row-number="4">
+                    <td><input type="text" id="playerName_row4" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row4" value="0"></td>
+                    <td><input type="text" id="opponent1_row4" value="0"></td>
+                    <td><input type="text" id="opponent2_row4" value="0"></td>
+                    <td id="cellDeltaO1_row4"><span id="deltaO1_row4">0</span></td>
+                    <td id="cellDeltaO2_row4"><span id="deltaO2_row4">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row4">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row5" data-row-number="5">
+                    <td><input type="text" id="playerName_row5" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row5" value="0"></td>
+                    <td><input type="text" id="opponent1_row5" value="0"></td>
+                    <td><input type="text" id="opponent2_row5" value="0"></td>
+                    <td id="cellDeltaO1_row5"><span id="deltaO1_row5">0</span></td>
+                    <td id="cellDeltaO2_row5"><span id="deltaO2_row5">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row5">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row6" data-row-number="6">
+                    <td><input type="text" id="playerName_row6" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row6" value="0"></td>
+                    <td><input type="text" id="opponent1_row6" value="0"></td>
+                    <td><input type="text" id="opponent2_row6" value="0"></td>
+                    <td id="cellDeltaO1_row6"><span id="deltaO1_row6">0</span></td>
+                    <td id="cellDeltaO2_row6"><span id="deltaO2_row6">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row6">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row7" data-row-number="7">
+                    <td><input type="text" id="playerName_row7" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row7" value="0"></td>
+                    <td><input type="text" id="opponent1_row7" value="0"></td>
+                    <td><input type="text" id="opponent2_row7" value="0"></td>
+                    <td id="cellDeltaO1_row7"><span id="deltaO1_row7">0</span></td>
+                    <td id="cellDeltaO2_row7"><span id="deltaO2_row7">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row7">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row8" data-row-number="8">
+                    <td><input type="text" id="playerName_row8" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row8" value="0"></td>
+                    <td><input type="text" id="opponent1_row8" value="0"></td>
+                    <td><input type="text" id="opponent2_row8" value="0"></td>
+                    <td id="cellDeltaO1_row8"><span id="deltaO1_row8">0</span></td>
+                    <td id="cellDeltaO2_row8"><span id="deltaO2_row8">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row8">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row9" data-row-number="9">
+                    <td><input type="text" id="playerName_row9" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row9" value="0"></td>
+                    <td><input type="text" id="opponent1_row9" value="0"></td>
+                    <td><input type="text" id="opponent2_row9" value="0"></td>
+                    <td id="cellDeltaO1_row9"><span id="deltaO1_row9">0</span></td>
+                    <td id="cellDeltaO2_row9"><span id="deltaO2_row9">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row9">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row10" data-row-number="10">
+                    <td><input type="text" id="playerName_row10" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row10" value="0"></td>
+                    <td><input type="text" id="opponent1_row10" value="0"></td>
+                    <td><input type="text" id="opponent2_row10" value="0"></td>
+                    <td id="cellDeltaO1_row10"><span id="deltaO1_row10">0</span></td>
+                    <td id="cellDeltaO2_row10"><span id="deltaO2_row10">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row10">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row11" data-row-number="11">
+                    <td><input type="text" id="playerName_row11" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row11" value="0"></td>
+                    <td><input type="text" id="opponent1_row11" value="0"></td>
+                    <td><input type="text" id="opponent2_row11" value="0"></td>
+                    <td id="cellDeltaO1_row11"><span id="deltaO1_row11">0</span></td>
+                    <td id="cellDeltaO2_row11"><span id="deltaO2_row11">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row11">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row12" data-row-number="12">
+                    <td><input type="text" id="playerName_row12" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row12" value="0"></td>
+                    <td><input type="text" id="opponent1_row12" value="0"></td>
+                    <td><input type="text" id="opponent2_row12" value="0"></td>
+                    <td id="cellDeltaO1_row12"><span id="deltaO1_row12">0</span></td>
+                    <td id="cellDeltaO2_row12"><span id="deltaO2_row12">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row12">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row13" data-row-number="13">
+                    <td><input type="text" id="playerName_row13" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row13" value="0"></td>
+                    <td><input type="text" id="opponent1_row13" value="0"></td>
+                    <td><input type="text" id="opponent2_row13" value="0"></td>
+                    <td id="cellDeltaO1_row13"><span id="deltaO1_row13">0</span></td>
+                    <td id="cellDeltaO2_row13"><span id="deltaO2_row13">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row13">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row14" data-row-number="14">
+                    <td><input type="text" id="playerName_row14" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row14" value="0"></td>
+                    <td><input type="text" id="opponent1_row14" value="0"></td>
+                    <td><input type="text" id="opponent2_row14" value="0"></td>
+                    <td id="cellDeltaO1_row14"><span id="deltaO1_row14">0</span></td>
+                    <td id="cellDeltaO2_row14"><span id="deltaO2_row14">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row14">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row15" data-row-number="15">
+                    <td><input type="text" id="playerName_row15" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row15" value="0"></td>
+                    <td><input type="text" id="opponent1_row15" value="0"></td>
+                    <td><input type="text" id="opponent2_row15" value="0"></td>
+                    <td id="cellDeltaO1_row15"><span id="deltaO1_row15">0</span></td>
+                    <td id="cellDeltaO2_row15"><span id="deltaO2_row15">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row15">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row16" data-row-number="16">
+                    <td><input type="text" id="playerName_row16" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row16" value="0"></td>
+                    <td><input type="text" id="opponent1_row16" value="0"></td>
+                    <td><input type="text" id="opponent2_row16" value="0"></td>
+                    <td id="cellDeltaO1_row16"><span id="deltaO1_row16">0</span></td>
+                    <td id="cellDeltaO2_row16"><span id="deltaO2_row16">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row16">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row17" data-row-number="17">
+                    <td><input type="text" id="playerName_row17" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row17" value="0"></td>
+                    <td><input type="text" id="opponent1_row17" value="0"></td>
+                    <td><input type="text" id="opponent2_row17" value="0"></td>
+                    <td id="cellDeltaO1_row17"><span id="deltaO1_row17">0</span></td>
+                    <td id="cellDeltaO2_row17"><span id="deltaO2_row17">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row17">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row18" data-row-number="18">
+                    <td><input type="text" id="playerName_row18" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row18" value="0"></td>
+                    <td><input type="text" id="opponent1_row18" value="0"></td>
+                    <td><input type="text" id="opponent2_row18" value="0"></td>
+                    <td id="cellDeltaO1_row18"><span id="deltaO1_row18">0</span></td>
+                    <td id="cellDeltaO2_row18"><span id="deltaO2_row18">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row18">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row19" data-row-number="19">
+                    <td><input type="text" id="playerName_row19" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row19" value="0"></td>
+                    <td><input type="text" id="opponent1_row19" value="0"></td>
+                    <td><input type="text" id="opponent2_row19" value="0"></td>
+                    <td id="cellDeltaO1_row19"><span id="deltaO1_row19">0</span></td>
+                    <td id="cellDeltaO2_row19"><span id="deltaO2_row19">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row19">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row20" data-row-number="20">
+                    <td><input type="text" id="playerName_row20" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row20" value="0"></td>
+                    <td><input type="text" id="opponent1_row20" value="0"></td>
+                    <td><input type="text" id="opponent2_row20" value="0"></td>
+                    <td id="cellDeltaO1_row20"><span id="deltaO1_row20">0</span></td>
+                    <td id="cellDeltaO2_row20"><span id="deltaO2_row20">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row20">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row21" data-row-number="21">
+                    <td><input type="text" id="playerName_row21" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row21" value="0"></td>
+                    <td><input type="text" id="opponent1_row21" value="0"></td>
+                    <td><input type="text" id="opponent2_row21" value="0"></td>
+                    <td id="cellDeltaO1_row21"><span id="deltaO1_row21">0</span></td>
+                    <td id="cellDeltaO2_row21"><span id="deltaO2_row21">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row21">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row22" data-row-number="22">
+                    <td><input type="text" id="playerName_row22" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row22" value="0"></td>
+                    <td><input type="text" id="opponent1_row22" value="0"></td>
+                    <td><input type="text" id="opponent2_row22" value="0"></td>
+                    <td id="cellDeltaO1_row22"><span id="deltaO1_row22">0</span></td>
+                    <td id="cellDeltaO2_row22"><span id="deltaO2_row22">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row22">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row23" data-row-number="23">
+                    <td><input type="text" id="playerName_row23" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row23" value="0"></td>
+                    <td><input type="text" id="opponent1_row23" value="0"></td>
+                    <td><input type="text" id="opponent2_row23" value="0"></td>
+                    <td id="cellDeltaO1_row23"><span id="deltaO1_row23">0</span></td>
+                    <td id="cellDeltaO2_row23"><span id="deltaO2_row23">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row23">Reset</button></td>
+                </tr>
+                 <tr class="data-row" data-row-suffix="_row24" data-row-number="24">
+                    <td><input type="text" id="playerName_row24" value=""><span class="row-number"></span></td>
+                    <td><input type="text" id="myPoints_row24" value="0"></td>
+                    <td><input type="text" id="opponent1_row24" value="0"></td>
+                    <td><input type="text" id="opponent2_row24" value="0"></td>
+                    <td id="cellDeltaO1_row24"><span id="deltaO1_row24">0</span></td>
+                    <td id="cellDeltaO2_row24"><span id="deltaO2_row24">0</span></td>
+                    <td class="reset-cell"><button class="reset-button" data-row-suffix="_row24">Reset</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        // Funzione per determinare il colore di sfondo in base al valore
+        function getColorForValue(value) {
+            if (value < -50000) {
+                return '#800080'; // Viola intenso
+            } else if (value >= -49999 && value <= -20000) {
+                return '#C71585'; // Rosso violaceo
+            } else if (value >= -19999 && value <= 0) {
+                return '#FF0000'; // Rosso vivo
+            } else if (value >= 1 && value <= 10000) {
+                return '#FF4500'; // Rosso aranciato
+            } else if (value >= 10001 && value <= 25000) {
+                return '#FFA500'; // Arancione
+            } else if (value >= 25001 && value <= 40000) {
+                return '#FFD700'; // Giallo aranciato
+            } else if (value >= 40001 && value <= 55000) {
+                return '#FFFACD'; // Giallo limone
+            } else if (value >= 55001 && value <= 70000) {
+                return '#AFEEEE'; // Verde acqua chiaro
+            } else if (value > 70000) {
+                return '#87CEEB'; // Blu cielo
+            } else {
+                return ''; // Colore di default (trasparente)
+            }
+        }
+
+        // Funzione per determinare il colore del testo in base al colore di sfondo (opzionale)
+        function getTextColorForBackground(bgColor) {
+             // Semplice euristica: testo bianco per sfondi scuri, nero per chiari
+             const darkColors = ['#800080', '#C71585', '#FF0000', '#C71585']; // Aggiungi qui i colori scuri
+             if (darkColors.includes(bgColor)) {
+                 return '#FFFFFF'; // Bianco
+             }
+             return '#000000'; // Nero di default
+        }
+
+        // Funzione per salvare i dati di una specifica riga in localStorage
+        function saveRowData(rowSuffix) {
+            const playerNameInput = document.getElementById('playerName' + rowSuffix);
+            const myPointsInput = document.getElementById('myPoints' + rowSuffix);
+            const opponent1Input = document.getElementById('opponent1' + rowSuffix);
+            const opponent2Input = document.getElementById('opponent2' + rowSuffix);
+
+            if(playerNameInput) localStorage.setItem('playerName' + rowSuffix, playerNameInput.value);
+            if(myPointsInput) localStorage.setItem('myPoints' + rowSuffix, myPointsInput.value);
+            if(opponent1Input) localStorage.setItem('opponent1' + rowSuffix, opponent1Input.value);
+            if(opponent2Input) localStorage.setItem('opponent2' + rowSuffix, opponent2Input.value);
+        }
+
+        // Funzione per caricare i dati di una specifica riga da localStorage
+        function loadRowData(rowSuffix) {
+            const playerName = localStorage.getItem('playerName' + rowSuffix);
+            const myPoints = localStorage.getItem('myPoints' + rowSuffix);
+            const opponent1 = localStorage.getItem('opponent1' + rowSuffix);
+            const opponent2 = localStorage.getItem('opponent2' + rowSuffix);
+
+            // Imposta i valori solo se esistono in localStorage e l'elemento input esiste
+            const playerNameInput = document.getElementById('playerName' + rowSuffix);
+            const myPointsInput = document.getElementById('myPoints' + rowSuffix);
+            const opponent1Input = document.getElementById('opponent1' + rowSuffix);
+            const opponent2Input = document.getElementById('opponent2' + rowSuffix);
+
+            if (playerName !== null && playerNameInput) playerNameInput.value = playerName;
+            // Per i campi numerici, usiamo 0 se il valore salvato è null o vuoto
+            if (myPoints !== null && myPointsInput) myPointsInput.value = myPoints === '' ? '0' : myPoints;
+            if (opponent1 !== null && opponent1Input) opponent1Input.value = opponent1 === '' ? '0' : opponent1;
+            if (opponent2 !== null && opponent2Input) opponent2Input.value = opponent2 === '' ? '0' : opponent2;
+        }
+
+        // Funzione per calcolare, aggiornare i delta e cambiare i colori per una specifica riga
+        function updateDeltasAndColors(rowSuffix) {
+             // Recupera gli input, usando 0 come fallback se non sono numeri validi
+            const myPointsInput = document.getElementById('myPoints' + rowSuffix);
+            const opponent1Input = document.getElementById('opponent1' + rowSuffix);
+            const opponent2Input = document.getElementById('opponent2' + rowSuffix);
+
+            if (!myPointsInput || !opponent1Input || !opponent2Input) {
+                // Elementi non trovati per questa riga, esci
+                console.warn("Elementi input non trovati per la riga (updateDeltasAndColors):", rowSuffix);
+                return;
+            }
+
+            const myPoints = parseFloat(myPointsInput.value) || 0;
+            const opponent1 = parseFloat(opponent1Input.value) || 0;
+            const opponent2 = parseFloat(opponent2Input.value) || 0;
+
+            // Calcola i delta
+            const delta1 = myPoints - opponent1;
+            const delta2 = myPoints - opponent2;
+
+            // Ottieni gli elementi dove mostrare i delta e le loro celle contenitrici
+            const deltaO1Span = document.getElementById('deltaO1' + rowSuffix);
+            const deltaO2Span = document.getElementById('deltaO2' + rowSuffix);
+            const cellDeltaO1 = document.getElementById('cellDeltaO1' + rowSuffix);
+            const cellDeltaO2 = document.getElementById('cellDeltaO2' + rowSuffix);
+
+            // Aggiorna gli span con i risultati
+            if (deltaO1Span) deltaO1Span.textContent = delta1; // O delta1.toFixed(n) se vuoi decimali
+            if (deltaO2Span) deltaO2Span.textContent = delta2; // O delta2.toFixed(n) se vuoi decimali
+
+            // Determina e imposta i colori di sfondo delle celle
+            const color1 = getColorForValue(delta1);
+            const color2 = getColorForValue(delta2);
+
+            if (cellDeltaO1) cellDeltaO1.style.backgroundColor = color1;
+            if (cellDeltaO2) cellDeltaO2.style.backgroundColor = color2;
+
+            // Determina e imposta i colori del testo per leggibilità
+            if (deltaO1Span) deltaO1Span.style.color = getTextColorForBackground(color1);
+            if (deltaO2Span) deltaO2Span.style.color = getTextColorForBackground(color2);
+        }
+
+        // Funzione per resettare i dati di una specifica riga
+        function resetRow(rowSuffix) {
+            // Pulisci i campi input
+            const playerNameInput = document.getElementById('playerName' + rowSuffix);
+            const myPointsInput = document.getElementById('myPoints' + rowSuffix);
+            const opponent1Input = document.getElementById('opponent1' + rowSuffix);
+            const opponent2Input = document.getElementById('opponent2' + rowSuffix);
+
+            if(playerNameInput) playerNameInput.value = '';
+            if(myPointsInput) myPointsInput.value = '0'; // Puoi reimpostare a 0 o vuoto
+            if(opponent1Input) opponent1Input.value = '0'; // Puoi reimpostare a 0 o vuoto
+            if(opponent2Input) opponent2Input.value = '0';
+
+
+            // Pulisci i dati da localStorage
+            localStorage.removeItem('playerName' + rowSuffix);
+            localStorage.removeItem('myPoints' + rowSuffix);
+            localStorage.removeItem('opponent1' + rowSuffix);
+            localStorage.removeItem('opponent2' + rowSuffix);
+
+            // Aggiorna la visualizzazione dei delta (verranno ricalcolati a 0)
+            updateDeltasAndColors(rowSuffix);
+        }
+
+        // --- Inizializzazione e Event Listeners ---
+
+        // Esegue il codice JS solo quando il DOM è completamente caricato
+        document.addEventListener('DOMContentLoaded', function() {
+
+             // Ottieni tutti gli elementi riga con la classe 'data-row'
+            const dataRows = document.querySelectorAll('.data-row');
+
+            console.log("Trovate", dataRows.length, "righe dati all'avvio."); // Log del numero di righe trovate
+
+            // Carica i dati e inizializza la visualizzazione per ogni riga all'avvio
+            dataRows.forEach((row, index) => { // Aggiunto index per log
+                // Usiamo data-row-suffix come identificatore principale
+                const rowSuffix = row.dataset.rowSuffix;
+                // Recuperiamo il numero dalla data-row-number
+                const rowNumber = row.dataset.rowNumber; // Legge l'attributo data-row-number="N"
+
+                console.log(`Processing row index: ${index}, Suffix: ${rowSuffix}, Number: ${rowNumber}`); // Log info per ogni riga
+
+                if (rowSuffix && rowNumber) { // Controlla che esistano entrambi (suffix e number attribute)
+                    loadRowData(rowSuffix);
+                    updateDeltasAndColors(rowSuffix); // Esegui il calcolo iniziale basato sui dati caricati
+
+                    // Cerca lo span con classe 'row-number' specificamente all'interno della PRIMA cella (td) della riga corrente
+                    const rowNumberSpan = row.cells[0] ? row.cells[0].querySelector('.row-number') : null;
+
+
+                    if (rowNumberSpan) {
+                        // Usiamo direttamente il valore di data-row-number
+                        rowNumberSpan.textContent = ' #' + rowNumber; // Aggiungi un prefisso ' #'
+                        console.log(`   Row ${rowNumber} (#${index}) number span found in cell 0. Set text to: ${rowNumberSpan.textContent}`); // Log successo
+                    } else {
+                         // Questo log apparirà se lo span NON viene trovato nella prima cella
+                         console.warn(`   Span .row-number NOT found in the first cell of row with suffix: ${rowSuffix} (#${index})`, row); // Log fallimento span
+                    }
+                } else {
+                    // Questo log apparirà se mancano gli attributi data-row-suffix o data-row-number sulla riga TR
+                    console.warn("   Riga dati trovata senza data-row-suffix o data-row-number (durante init):", row); // Log attributi mancanti
+                }
+            });
+
+
+            // Usa l'Event Delegation sul tbody per gestire gli input e i click sui pulsanti
+            const tableBody = document.getElementById('tableBody'); // Seleziona il tbody della tabella
+
+            if (tableBody) { // Assicurati che tbody esista
+                 tableBody.addEventListener('input', function(event) {
+                    const target = event.target; // L'elemento che ha scatenato l'evento
+
+                    // Controlla se l'elemento è un input field all'interno di una riga dati
+                    if (target.tagName === 'INPUT') {
+                        const row = target.closest('.data-row'); // Risali al genitore con classe data-row
+                        const cell = target.closest('td'); // Risali alla cella genitore
+
+                        if (row && cell) { // Assicurati che l'input sia dentro una riga dati e una cella
+                             // Usa dataset per ottenere il suffisso della riga
+                            const rowSuffix = row.dataset.rowSuffix;
+
+                            if (rowSuffix) { // Assicurati che il suffisso esista
+                                // 1. Sempre salva i dati della riga quando qualsiasi input al suo interno cambia
+                                saveRowData(rowSuffix);
+
+                                // 2. Controlla se questa input dovrebbe scatenare il ricalcolo dei delta
+                                const cellIndex = cell.cellIndex; // Ottieni l'indice della colonna (0-based)
+                                // Le colonne interessate sono la 2a (indice 1), 3a (indice 2) e 4a (indice 3)
+                                if (cellIndex === 1 || cellIndex === 2 || cellIndex === 3) {
+                                    updateDeltasAndColors(rowSuffix);
+                                }
+                            } else {
+                                console.warn("Input event su riga dati senza data-row-suffix:", target);
+                            }
+                        } else {
+                            // console.log("Input event su elemento non gestito (non in riga dati):", target);
+                        }
+                    }
+                });
+
+                tableBody.addEventListener('click', function(event) {
+                    const target = event.target; // L'elemento che ha scatenato l'evento
+
+                    // Controlla se l'elemento cliccato o un suo genitore è un pulsante di reset
+                    const resetButton = target.closest('.reset-button');
+
+                    if (resetButton) {
+                         const row = resetButton.closest('.data-row'); // Risali al genitore con classe data-row
+                         if (row) {
+                              // Usa dataset per ottenere il suffisso della riga
+                             const rowSuffix = row.dataset.rowSuffix;
+                             if (rowSuffix) {
+                                  resetRow(rowSuffix); // Resetta solo quella riga
+                             } else {
+                                 console.warn("Pulsante reset cliccato su riga senza data-row-suffix:", row);
+                             }
+                         } else {
+                             console.warn("Pulsante reset cliccato non all'interno di una riga dati:", target);
+                         }
+                    }
+                });
+            } else {
+                console.error("Elemento tbody con id 'tableBody' non trovato!");
+            }
+
+
+        }); // Fine DOMContentLoaded
+
+    </script>
+
+</body>
+</html>
