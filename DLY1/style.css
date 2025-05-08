@@ -1,0 +1,191 @@
+body {
+    margin: 0; /* Remove default body margin */
+    font-family: sans-serif; /* Optional: Set a default font */
+    background-color: #f8f8f8; /* Optional: Light background for the page */
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+    grid-template-rows: auto repeat(7, 1fr); /* Auto height for row 1, equal height for rows 2-8 */
+    gap: 5px; /* Space between grid items */
+    padding: 10px;
+    border: 1px solid #ccc;
+    max-width: 900px; /* Optional: Limit max width */
+    margin: 20px auto; /* Center the grid container */
+    background-color: #fff; /* White background for the grid itself */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+}
+
+/* --- Column Coloring --- */
+/* Column 1 */
+.grid-item:nth-child(3n + 1) {
+    background-color: #e0f7fa; /* Very light cyan */
+}
+
+/* Column 2 */
+.grid-item:nth-child(3n + 2) {
+    background-color: #e8f5e9; /* Very light green */
+}
+
+/* Column 3 */
+.grid-item:nth-child(3n + 3) {
+    background-color: #fff3e0; /* Very light orange/yellow */
+}
+/* --- End Column Coloring --- */
+
+
+.grid-item {
+    border: 1px solid #eee; /* Keep individual item border for definition */
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    justify-content: center;
+    align-items: center;
+    /* Ensure item background is applied */
+    box-sizing: border-box;
+}
+
+/* Colore per le caselle header (leggermente più scuro del colore della colonna) */
+.grid-item.header:nth-child(1) {
+    background-color: #b2ebf2; /* Slightly darker cyan */
+}
+
+.grid-item.header:nth-child(2) {
+    background-color: #c8e6c9; /* Slightly darker green */
+}
+
+.grid-item.header:nth-child(3) {
+    background-color: #ffe0b2; /* Slightly darker orange/yellow */
+}
+
+
+.grid-item.header h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 2em; /* Double the size of the header text */
+}
+
+/* Increase font size for input fields in header */
+.grid-item.header input[type="text"] {
+    font-size: 2em; /* Double the size of the text input */
+    padding: 5px; /* Adjust padding for better appearance */
+    width: calc(100% - 10px); /* Make input fill cell width minus padding */
+    box-sizing: border-box; /* Include border and padding in element's total width */
+    text-align: center; /* Center text inside the input */
+    margin-bottom: 10px; /* Add space below input before the button */
+}
+
+/* Style for the reset buttons */
+.reset-button {
+    padding: 8px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f0f0f0; /* Light grey default background */
+    transition: background-color 0.3s ease;
+}
+
+.reset-button:hover {
+    background-color: #e0e0e0; /* Darker grey on hover */
+}
+
+
+/* Style for the text label above the image/interactive element */
+.image-label {
+    font-weight: bold;
+    margin-bottom: 5px; /* Space between label and content below */
+    text-transform: uppercase; /* Ensure text is uppercase */
+    font-size: 2em; /* Double the size of the image label text */
+}
+
+.grid-item img {
+    max-width: 100%; /* Ensure image fits within the cell width */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove extra space below the image */
+    margin: 0 auto 10px auto; /* Center image and add space below */
+}
+
+/* Container for arrows and interactive elements (checkbox/dropdown) */
+.interactive-group {
+    display: flex; /* Arrange items horizontally */
+    align-items: center; /* Vertically center items within the group */
+    justify-content: center; /* Horizontally center items within the cell */
+    margin-top: 10px; /* Space above the interactive group */
+}
+
+/* Style for the arrows */
+.arrow {
+    font-size: 1.5em; /* Adjust arrow size */
+    cursor: pointer; /* Indicate clickable */
+    margin: 0 5px; /* Space between arrows and the interactive element */
+}
+
+/* Style for the checkbox */
+.grid-item .item-checkbox {
+    transform: scale(2); /* Double the checkbox size */
+    /* Adjust margin if needed after scaling */
+    /* Styling for the checkbox appearance */
+    appearance: none; /* Hide default checkbox appearance */
+    -webkit-appearance: none; /* Hide default checkbox appearance for Webkit browsers */
+    width: 20px; /* Set a base size */
+    height: 20px; /* Set a base size */
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 4px; /* Slightly rounded corners */
+    cursor: pointer;
+    position: relative; /* Needed for pseudo-elements */
+    display: flex; /* Use flexbox for centering the checkmark */
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box; /* Include border and padding in size */
+}
+
+/* Color the checkbox when NOT checked (Yellow) */
+.grid-item .item-checkbox:not(:checked) {
+    background-color: #FFFF00; /* Yellow */
+}
+
+/* Color the checkbox when checked (Green) */
+.grid-item .item-checkbox:checked {
+     background-color: #008000; /* Green */
+}
+
+/* Style for the checkmark when checked (optional but good practice) */
+.grid-item .item-checkbox:checked::after {
+    content: '\2713'; /* Unicode checkmark symbol */
+    font-size: 1.5em; /* Size of the checkmark */
+    color: white; /* White checkmark for contrast against green */
+}
+
+
+/* Style for the dropdown menu */
+.grid-item .item-dropdown {
+    font-size: 1.5em; /* Adjust dropdown font size */
+    padding: 5px;
+    margin: 0;
+    /* Default background color for dropdown when no specific color is needed */
+    background-color: #f0f0f0; /* Light grey */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    /* Add a default border or outline if needed */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Background colors for dropdowns based on value (overrides default and column color) */
+.bg-orange {
+    background-color: #FFA500 !important; /* Arancione acceso */
+}
+
+.bg-light-olive {
+    background-color: #9ACD32 !important; /* Verde oliva chiaro */
+}
