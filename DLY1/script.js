@@ -3,11 +3,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const textInputs = document.querySelectorAll('.grid-item.header input[type="text"]');
     const checkboxes = document.querySelectorAll('.item-checkbox');
     const dropdowns = document.querySelectorAll('.item-dropdown');
+    const chargesDropdowns = document.querySelectorAll('.item-dropdown-charges'); // Select the new charges dropdowns
     const resetButtons = document.querySelectorAll('.reset-button'); // Seleziona i pulsanti di reset
 
     const localStorageKey = 'gridState'; // Chiave per localStorage
 
-    // Definisce i valori massimi per i dropdown numerici
+    // Definisce i valori massimi per i dropdown numerici (existing)
     const maxValues = {
         'elemental': '1200',
         'essence': '1200',
@@ -17,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'activity': '1750'
     };
 
-     // Definisce le opzioni del dropdown Buy Energy per la colorazione
+     // Definisce le opzioni del dropdown Buy Energy per la colorazione (existing)
     const buyEnergyOptions = [
         "0", "1x50💎", "2x50💎", "1x100💎", "2x100💎",
         "3x100💎", "4x100💎", "5x100💎", "more 💎💎💎"
@@ -38,10 +39,14 @@ document.addEventListener('DOMContentLoaded', function() {
             state[checkbox.id] = checkbox.checked;
         });
 
-        // Salva i valori selezionati nei dropdown
+        // Salva i valori selezionati nei dropdown (existing and new)
         dropdowns.forEach(dropdown => {
             state[dropdown.id] = dropdown.value;
         });
+        chargesDropdowns.forEach(dropdown => { // Save state for charges dropdowns
+            state[dropdown.id] = dropdown.value;
+        });
+
 
         localStorage.setItem(localStorageKey, JSON.stringify(state));
     }
@@ -64,16 +69,23 @@ document.addEventListener('DOMContentLoaded', function() {
             checkboxes.forEach(checkbox => {
                  if (state[checkbox.id] !== undefined) {
                     checkbox.checked = state[checkbox.id];
-                    // La colorazione è gestita via CSS
+                    // La colorazione è gestita via CSS per le checkbox esistenti
                 }
             });
 
-            // Ripristina i valori selezionati nei dropdown
+            // Ripristina i valori selezionati nei dropdown (existing and new)
             dropdowns.forEach(dropdown => {
                  if (state[dropdown.id] !== undefined) {
                     dropdown.value = state[dropdown.id];
                     // Aggiorna il colore del dropdown dopo aver impostato il valore
                     updateDropdownColor(dropdown);
+                }
+            });
+             chargesDropdowns.forEach(dropdown => { // Load state for charges dropdowns
+                 if (state[dropdown.id] !== undefined) {
+                    dropdown.value = state[dropdown.id];
+                    // Aggiorna il colore del dropdown dopo aver impostato il valore
+                    updateDropdownColor(dropdown); // Use the same update function
                 }
             });
         }
@@ -90,43 +102,84 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Trova tutti i dropdown nella colonna
+        // Trova tutti i dropdown nella colonna (existing and new)
         dropdowns.forEach(dropdown => {
             if (dropdown.id.startsWith(playerPrefix)) {
-                // Resetta al primo valore (che è sempre '0')
+                // Resetta al primo valore (che è sempre '0' for existing numerical dropdowns)
                 dropdown.value = dropdown.querySelector('option:first-child').value;
                 // Aggiorna il colore del dropdown
                 updateDropdownColor(dropdown);
             }
         });
+         chargesDropdowns.forEach(dropdown => { // Reset charges dropdowns
+            if (dropdown.id.startsWith(playerPrefix)) {
+                dropdown.value = 'check'; // Reset to 'check' for charges dropdown
+                updateDropdownColor(dropdown); // Update color
+            }
+        });
+
 
         // Salva lo stato dopo il reset
         saveState();
     }
 
 
-    // Funzione per aggiornare il colore del dropdown
+    // Funzione per aggiornare il colore del dropdown (handles both types)
     function updateDropdownColor(dropdown) {
         const selectedValue = dropdown.value;
         const gridItem = dropdown.closest('.grid-item');
         const itemType = gridItem ? gridItem.dataset.itemType : null;
 
-        // Rimuovi classi di colore precedenti
-        dropdown.classList.remove('bg-orange', 'bg-light-olive', 'bg-very-light-green'); // Added new class here
+        // Rimuovi classi di colore precedenti (add new color classes here)
+        dropdown.classList.remove(
+            'bg-orange',
+            'bg-light-olive',
+            'bg-very-light-green',
+            'bg-yellow',
+            'bg-intense-orange',
+            'bg-light-orange',
+            'bg-light-green',
+            'bg-green'
+        );
 
         if (itemType === 'buy_energy') {
-            // Logica di colorazione specifica per Buy Energy basata sulla posizione del valore nell'array
+            // Logica di colorazione specifica per Buy Energy (existing)
             const selectedIndex = buyEnergyOptions.indexOf(selectedValue);
 
-            if (selectedIndex >= 0 && selectedIndex <= 1) { // Indici 0 e 1 (valori "0", "1x50💎")
+            if (selectedIndex >= 0 && selectedIndex <= 1) {
                  dropdown.classList.add('bg-orange');
-            } else if (selectedIndex >= 2 && selectedIndex <= 6) { // Indici da 2 a 6 (valori da "2x50💎" a "4x100💎")
-                 dropdown.classList.add('bg-very-light-green'); // Apply very light green
-            } else if (selectedIndex >= 7) { // Indici 7 e 8 (valori "5x100💎", "more 💎💎💎")
-                 dropdown.classList.add('bg-light-olive'); // Apply light olive green (max value color)
+            } else if (selectedIndex >= 2 && selectedIndex <= 6) {
+                 dropdown.classList.add('bg-very-light-green');
+            } else if (selectedIndex >= 7) {
+                 dropdown.classList.add('bg-light-olive');
             }
-        } else {
-            // Logica di colorazione per gli altri dropdown (0 e max value)
+        } else if (itemType === 'adventure') {
+            // Logica di colorazione specifica per il nuovo dropdown 'charges'
+            switch (selectedValue) {
+                case 'check':
+                    dropdown.classList.add('bg-yellow');
+                    break;
+                case '0':
+                    dropdown.classList.add('bg-green');
+                    break;
+                case '1':
+                    dropdown.classList.add('bg-light-green');
+                    break;
+                case '2':
+                    dropdown.classList.add('bg-light-orange');
+                    break;
+                case '3':
+                case '4+':
+                    dropdown.classList.add('bg-intense-orange');
+                    break;
+                 default:
+                    // Default color if value doesn't match (light grey from CSS)
+                    break;
+            }
+        }
+
+         else {
+            // Logica di colorazione per gli altri dropdown (0 e max value) (existing)
             if (selectedValue === '0') {
                 dropdown.classList.add('bg-orange');
             } else if (itemType && maxValues[itemType] && selectedValue === maxValues[itemType]) {
@@ -146,11 +199,11 @@ document.addEventListener('DOMContentLoaded', function() {
         input.addEventListener('input', saveState);
     });
 
-    // Listener per checkbox e dropdown
-    document.querySelectorAll('.item-checkbox, .item-dropdown').forEach(element => {
+    // Listener per checkbox e dropdown (update to include new class)
+    document.querySelectorAll('.item-checkbox, .item-dropdown, .item-dropdown-charges').forEach(element => {
         element.addEventListener('change', function() {
             saveState();
-            if (element.classList.contains('item-dropdown')) {
+            if (element.classList.contains('item-dropdown') || element.classList.contains('item-dropdown-charges')) {
                 updateDropdownColor(element);
             }
         });
@@ -166,9 +219,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Applica colore iniziale ai dropdown all'avvio (dopo il caricamento dello stato)
-     // Questa parte viene chiamata DOPO loadState, quindi aggiornerà correttamente i colori iniziali.
-    dropdowns.forEach(dropdown => {
+    // Applica colore iniziale ai dropdown all'avvio (dopo il caricamento dello stato) (update to include new class)
+    document.querySelectorAll('.item-dropdown, .item-dropdown-charges').forEach(dropdown => {
         updateDropdownColor(dropdown);
     });
 

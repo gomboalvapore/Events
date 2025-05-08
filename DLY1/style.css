@@ -170,7 +170,8 @@ h1 {
 
 
 /* Style for the dropdown menu */
-.grid-item .item-dropdown {
+.grid-item .item-dropdown,
+.grid-item .item-dropdown-charges {
     font-size: 1.5em; /* Adjust dropdown font size */
     padding: 5px;
     margin: 0;
@@ -183,6 +184,7 @@ h1 {
 }
 
 /* Background colors for dropdowns based on value (overrides default and column color) */
+/* Existing colors - kept for other dropdowns if needed */
 .bg-orange {
     background-color: #FFA500 !important; /* Arancione acceso */
 }
@@ -191,7 +193,27 @@ h1 {
     background-color: #9ACD32 !important; /* Verde oliva chiaro */
 }
 
-/* New class for very light green background */
 .bg-very-light-green {
     background-color: #e7fee7 !important; /* Very, very light green */
+}
+
+/* New colors for charges dropdown */
+.bg-yellow {
+    background-color: #FFFF00 !important; /* Yellow */
+}
+
+.bg-intense-orange {
+    background-color: #FF4500 !important; /* Intense Orange (e.g., OrangeRed) */
+}
+
+.bg-light-orange {
+    background-color: #FFB347 !important; /* Light Orange */
+}
+
+.bg-light-green {
+    background-color: #90EE90 !important; /* Light Green */
+}
+
+.bg-green {
+    background-color: #008000 !important; /* Green */
 }
