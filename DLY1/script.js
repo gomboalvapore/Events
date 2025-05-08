@@ -7,13 +7,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const localStorageKey = 'gridState'; // Chiave per localStorage
 
+    // Definisce i valori massimi per i dropdown numerici
     const maxValues = {
         'elemental': '1200',
         'essence': '1200',
         'sparks': '450',
         'pet': '250',
-        'runes': '2500'
+        'runes': '2500',
+        'activity': '1750'
     };
+
+     // Definisce le opzioni del dropdown Buy Energy per la colorazione
+    const buyEnergyOptions = [
+        "0", "1x50💎", "2x50💎", "1x100💎", "2x100💎",
+        "3x100💎", "4x100💎", "5x100💎", "more 💎💎💎"
+    ];
+
 
     // Funzione per salvare lo stato attuale nel localStorage
     function saveState() {
@@ -102,13 +111,29 @@ document.addEventListener('DOMContentLoaded', function() {
         const gridItem = dropdown.closest('.grid-item');
         const itemType = gridItem ? gridItem.dataset.itemType : null;
 
-        dropdown.classList.remove('bg-orange', 'bg-light-olive');
+        // Rimuovi classi di colore precedenti
+        dropdown.classList.remove('bg-orange', 'bg-light-olive', 'bg-very-light-green'); // Added new class here
 
-        if (selectedValue === '0') {
-            dropdown.classList.add('bg-orange');
-        } else if (itemType && maxValues[itemType] && selectedValue === maxValues[itemType]) {
-             dropdown.classList.add('bg-light-olive');
+        if (itemType === 'buy_energy') {
+            // Logica di colorazione specifica per Buy Energy basata sulla posizione del valore nell'array
+            const selectedIndex = buyEnergyOptions.indexOf(selectedValue);
+
+            if (selectedIndex >= 0 && selectedIndex <= 1) { // Indici 0 e 1 (valori "0", "1x50💎")
+                 dropdown.classList.add('bg-orange');
+            } else if (selectedIndex >= 2 && selectedIndex <= 6) { // Indici da 2 a 6 (valori da "2x50💎" a "4x100💎")
+                 dropdown.classList.add('bg-very-light-green'); // Apply very light green
+            } else if (selectedIndex >= 7) { // Indici 7 e 8 (valori "5x100💎", "more 💎💎💎")
+                 dropdown.classList.add('bg-light-olive'); // Apply light olive green (max value color)
+            }
+        } else {
+            // Logica di colorazione per gli altri dropdown (0 e max value)
+            if (selectedValue === '0') {
+                dropdown.classList.add('bg-orange');
+            } else if (itemType && maxValues[itemType] && selectedValue === maxValues[itemType]) {
+                 dropdown.classList.add('bg-light-olive');
+            }
         }
+         // Se nessuno dei casi sopra si verifica, il colore di sfondo di default (grigio chiaro nel CSS) verrà applicato.
     }
 
     // Carica lo stato all'avvio della pagina
@@ -134,15 +159,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Aggiungi listener per i pulsanti di reset
     resetButtons.forEach(button => {
         button.addEventListener('click', function() {
-            const playerNumber = this.dataset.player; // Ottieni il numero del giocatore dal data-attribute
+            const playerNumber = this.dataset.player;
             if (playerNumber) {
-                resetColumn(parseInt(playerNumber)); // Chiama la funzione di reset
+                resetColumn(parseInt(playerNumber));
             }
         });
     });
 
-
-    // Applica colore iniziale ai dropdown anche se non caricati da localStorage (nel caso sia il primo accesso)
+    // Applica colore iniziale ai dropdown all'avvio (dopo il caricamento dello stato)
      // Questa parte viene chiamata DOPO loadState, quindi aggiornerà correttamente i colori iniziali.
     dropdowns.forEach(dropdown => {
         updateDropdownColor(dropdown);

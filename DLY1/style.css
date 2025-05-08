@@ -9,13 +9,14 @@ h1 {
     margin-top: 20px;
     margin-bottom: 20px;
     color: #333;
+    text-transform: uppercase; /* Ensure heading is uppercase */
 }
 
 
 .grid-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
-    grid-template-rows: auto repeat(7, 1fr); /* Auto height for row 1, equal height for rows 2-8 */
+    grid-template-rows: auto repeat(9, 1fr); /* Auto height for row 1, 9 image/interactive rows */
     gap: 5px; /* Space between grid items */
     padding: 10px;
     border: 1px solid #ccc;
@@ -188,4 +189,9 @@ h1 {
 
 .bg-light-olive {
     background-color: #9ACD32 !important; /* Verde oliva chiaro */
+}
+
+/* New class for very light green background */
+.bg-very-light-green {
+    background-color: #e7fee7 !important; /* Very, very light green */
 }

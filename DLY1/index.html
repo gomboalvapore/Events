@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAILY ACTIVITIES</title> <link rel="stylesheet" href="style.css">
+    <title>DAILY ACTIVITIES</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>DAILY ACTIVITIES</h1> <div class="grid-container">
+    <h1>DAILY ACTIVITIES</h1>
+
+    <div class="grid-container">
         <div class="grid-item header">
             <h3>Player 1</h3>
             <input type="text" placeholder="Inserisci testo" id="player1_input">
@@ -24,7 +27,8 @@
             <button class="reset-button" data-player="3">Reset Colonna 3</button>
         </div>
 
-        <div class="grid-item" data-item-type="adventure"> <div class="image-label">ADVENTURE</div>
+        <div class="grid-item" data-item-type="adventure">
+            <div class="image-label">ADVENTURE</div>
             <img src="IMG/adventure.JPG" alt="Adventure">
             <div class="interactive-group"> <span class="arrow">&#x25B2;</span> <input type="checkbox" class="item-checkbox" id="player1_adventure_checkbox">
                 <span class="arrow">&#x25B2;</span> </div>
@@ -42,7 +46,8 @@
                 <span class="arrow">&#x25B2;</span> </div>
         </div>
 
-        <div class="grid-item" data-item-type="artifact"> <div class="image-label">ARTIFACT</div>
+        <div class="grid-item" data-item-type="artifact">
+             <div class="image-label">ARTIFACT</div>
              <img src="IMG/artifact.JPG" alt="Artifact">
              <div class="interactive-group"> <span class="arrow">&#x25B2;</span> <input type="checkbox" class="item-checkbox" id="player1_artifact_checkbox">
                 <span class="arrow">&#x25B2;</span> </div>
@@ -304,6 +309,111 @@
                 <span class="arrow">&#x25B2;</span>
             </div>
         </div>
+
+        <div class="grid-item" data-item-type="buy_energy">
+            <div class="image-label">BUY ENERGY</div>
+            <img src="IMG/buy energy.JPG" alt="Buy Energy">
+             <div class="interactive-group">
+                <span class="arrow">&#x25B2;</span>
+                <select class="item-dropdown" id="player1_buy_energy_dropdown">
+                    <option value="0" selected>0</option>
+                    <option value="1x50💎">1x50💎</option>
+                    <option value="2x50💎">2x50💎</option>
+                    <option value="1x100💎">1x100💎</option>
+                    <option value="2x100💎">2x100💎</option>
+                    <option value="3x100💎">3x100💎</option>
+                    <option value="4x100💎">4x100💎</option>
+                    <option value="5x100💎">5x100💎</option>
+                    <option value="more 💎💎💎">more 💎💎💎</option>
+                </select>
+                <span class="arrow">&#x25B2;</span>
+            </div>
+        </div>
+        <div class="grid-item" data-item-type="buy_energy">
+            <div class="image-label">BUY ENERGY</div>
+            <img src="IMG/buy energy.JPG" alt="Buy Energy">
+             <div class="interactive-group">
+                <span class="arrow">&#x25B2;</span>
+                <select class="item-dropdown" id="player2_buy_energy_dropdown">
+                    <option value="0" selected>0</option>
+                    <option value="1x50💎">1x50💎</option>
+                    <option value="2x50💎">2x50💎</option>
+                    <option value="1x100💎">1x100💎</option>
+                    <option value="2x100💎">2x100💎</option>
+                    <option value="3x100💎">3x100💎</option>
+                    <option value="4x100💎">4x100💎</option>
+                    <option value="5x100💎">5x100💎</option>
+                    <option value="more 💎💎💎">more 💎💎💎</option>
+                </select>
+                <span class="arrow">&#x25B2;</span>
+            </div>
+        </div>
+        <div class="grid-item" data-item-type="buy_energy">
+            <div class="image-label">BUY ENERGY</div>
+            <img src="IMG/buy energy.JPG" alt="Buy Energy">
+             <div class="interactive-group">
+                <span class="arrow">&#x25B2;</span>
+                <select class="item-dropdown" id="player3_buy_energy_dropdown">
+                    <option value="0" selected>0</option>
+                    <option value="1x50💎">1x50💎</option>
+                    <option value="2x50💎">2x50💎</option>
+                    <option value="1x100💎">1x100💎</option>
+                    <option value="2x100💎">2x100💎</option>
+                    <option value="3x100💎">3x100💎</option>
+                    <option value="4x100💎">4x100💎</option>
+                    <option value="5x100💎">5x100💎</option>
+                    <option value="more 💎💎💎">more 💎💎💎</option>
+                </select>
+                <span class="arrow">&#x25B2;</span>
+            </div>
+        </div>
+
+         <div class="grid-item" data-item-type="activity">
+            <div class="image-label">ACTIVITY</div>
+            <img src="IMG/activity.JPG" alt="Activity">
+             <div class="interactive-group">
+                <span class="arrow">&#x25B2;</span>
+                <select class="item-dropdown" id="player1_activity_dropdown">
+                    <option value="0" selected>0</option>
+                    <option value="150">150</option>
+                    <option value="850">850</option>
+                    <option value="1250">1250</option>
+                    <option value="1750">1750</option>
+                </select>
+                <span class="arrow">&#x25B2;</span>
+            </div>
+        </div>
+        <div class="grid-item" data-item-type="activity">
+            <div class="image-label">ACTIVITY</div>
+            <img src="IMG/activity.JPG" alt="Activity">
+             <div class="interactive-group">
+                <span class="arrow">&#x25B2;</span>
+                <select class="item-dropdown" id="player2_activity_dropdown">
+                    <option value="0" selected>0</option>
+                    <option value="150">150</option>
+                    <option value="850">850</option>
+                    <option value="1250">1250</option>
+                    <option value="1750">1750</option>
+                </select>
+                <span class="arrow">&#x25B2;</span>
+            </div>
+        </div>
+        <div class="grid-item" data-item-type="activity">
+            <div class="image-label">ACTIVITY</div>
+            <img src="IMG/activity.JPG" alt="Activity">
+             <div class="interactive-group">
+                <span class="arrow">&#x25B2;</span>
+                <select class="item-dropdown" id="player3_activity_dropdown">
+                    <option value="0" selected>0</option>
+                    <option value="150">150</option>
+                    <option value="850">850</option>
+                    <option value="1250">1250</option>
+                    <option value="1750">1750</option>
+                </select>
+                <span class="arrow">&#x25B2;</span>
+            </div>
+        </div>
+
     </div>
 
     <script src="script.js"></script>
