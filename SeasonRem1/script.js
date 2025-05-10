@@ -22,10 +22,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         tableBody.addEventListener('change', function(event) {
             const target = event.target;
-            if (target.tagName === 'INPUT' && target.type === 'checkbox') {
+            if (target.tagName === 'INPUT') {
                 const row = target.closest('.data-row');
                 if (row) {
                     saveRowData(row);
+                    if (target.classList.contains('name-toggle')) {
+                        togglePlayerNameBackground(row, target);
+                    }
                 }
             }
         });
@@ -55,6 +58,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function togglePlayerNameBackground(row, toggleCheckbox) {
+        const rowSuffix = row.dataset.rowSuffix;
+        const playerNameInput = document.getElementById(`playerName${rowSuffix}`);
+        if (playerNameInput) {
+            playerNameInput.classList.toggle('active', toggleCheckbox.checked);
+        }
+    }
+
     function saveRowData(row) {
         const rowSuffix = row.dataset.rowSuffix;
         const playerNameInput = document.getElementById(`playerName${rowSuffix}`);
@@ -70,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function loadRowData(rowSuffix) {
         const playerNameInput = document.getElementById(`playerName${rowSuffix}`);
+        const playerNameToggle = document.getElementById(`playerNameToggle${rowSuffix}`);
         if (playerNameInput) {
             const savedPlayerName = localStorage.getItem(`playerName${rowSuffix}`);
             if (savedPlayerName) {
@@ -84,6 +96,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 checkbox.checked = savedState === 'true';
             }
         });
+
+        // Inizializza lo sfondo delle caselle di testo al caricamento
+        if (playerNameToggle && playerNameInput) {
+            playerNameInput.classList.toggle('active', playerNameToggle.checked);
+        }
     }
 
     // Carica i dati al caricamento della pagina

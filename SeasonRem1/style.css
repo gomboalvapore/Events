@@ -30,7 +30,8 @@ table {
     font-size: 0.9em;
 }
 
-th, td {
+th,
+td {
     border: 1px solid #ddd;
     padding: 6px;
     text-align: center;
@@ -45,21 +46,12 @@ th {
 
 .data-row td:nth-child(1) {
     background-color: #e0f7fa;
+    display: flex;
+    align-items: center;
+    position: relative; /* Per posizionare .row-number */
 }
 
-.data-row td:nth-child(2) {
-    background-color: #fff9c4;
-}
-
-.data-row td:nth-child(3) {
-    background-color: #f8bbd0;
-}
-
-.data-row td:nth-child(4) {
-    background-color: #c8e6c9;
-}
-
-td input[type="text"] {
+.data-row td:nth-child(1) input[type="text"] {
     width: calc(100% - 30px);
     box-sizing: border-box;
     padding: 4px;
@@ -72,6 +64,11 @@ td input[type="text"] {
     margin-right: 5px;
 }
 
+.data-row td:nth-child(1) input[type="text"].active {
+    background-color: #e8f5e9;
+    /* Verde molto chiaro */
+}
+
 .data-row td:nth-child(1) input[type="text"] {
     font-size: 140%;
 }
@@ -81,16 +78,20 @@ td span {
     padding: 4px;
     font-weight: bold;
     color: inherit;
+    position: absolute;
+    /* Posiziona il numero */
+    top: 50%;
+    /* Verticalmente centrato */
+    right: 5px;
+    /* A destra */
+    transform: translateY(-50%);
+    /* Corregge l'allineamento verticale */
 }
 
 .row-number {
     font-size: 0.8em;
     font-weight: normal;
     color: #555;
-    display: inline-block;
-    vertical-align: middle;
-    width: 20px;
-    text-align: left;
 }
 
 .reset-cell {
@@ -123,13 +124,28 @@ td input[type="checkbox"] {
 
 /* Stile per la quarta checkbox */
 .colored-checkbox {
-    accent-color: #ffc107;  /* Giallo chiaro (accent color) */
+    accent-color: #ffc107;
+    /* Giallo chiaro (accent color) */
     /* Fallback per browser che non supportano accent-color */
     box-shadow: 0 0 0 2px #ffc107;
 }
 
 .colored-checkbox:checked {
-    accent-color: #40E0D0; /* Turchese (accent color) */
+    accent-color: #40e0d0;
+    /* Turchese (accent color) */
     /* Fallback */
-    box-shadow: 0 0 0 2px #40E0D0;
+    box-shadow: 0 0 0 2px #40e0d0;
+}
+
+/* Colori delle colonne */
+.data-row td:nth-child(2) {
+    background-color: #fff9c4;
+}
+
+.data-row td:nth-child(3) {
+    background-color: #f8bbd0;
+}
+
+.data-row td:nth-child(4) {
+    background-color: #c8e6c9;
 }
