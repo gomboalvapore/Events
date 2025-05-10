@@ -43,11 +43,21 @@ th {
     color: #333;
 }
 
-.data-row td:nth-child(1) { background-color: #e0f7fa; }
-.data-row td:nth-child(2) { background-color: #fff9c4; }
-.data-row td:nth-child(3) { background-color: #f8bbd0; }
-.data-row td:nth-child(4) { background-color: #c8e6c9; }
+.data-row td:nth-child(1) {
+    background-color: #e0f7fa;
+}
 
+.data-row td:nth-child(2) {
+    background-color: #fff9c4;
+}
+
+.data-row td:nth-child(3) {
+    background-color: #f8bbd0;
+}
+
+.data-row td:nth-child(4) {
+    background-color: #c8e6c9;
+}
 
 td input[type="text"] {
     width: calc(100% - 30px);
@@ -106,6 +116,20 @@ td span {
 
 /* Stile per le checkbox */
 td input[type="checkbox"] {
-    margin: 0 auto; /* Centra le checkbox */
+    margin: 0 auto;
+    /* Centra le checkbox */
     vertical-align: middle;
+}
+
+/* Stile per la quarta checkbox */
+.colored-checkbox {
+    accent-color: #ffc107;  /* Giallo chiaro (accent color) */
+    /* Fallback per browser che non supportano accent-color */
+    box-shadow: 0 0 0 2px #ffc107;
+}
+
+.colored-checkbox:checked {
+    accent-color: #40E0D0; /* Turchese (accent color) */
+    /* Fallback */
+    box-shadow: 0 0 0 2px #40E0D0;
 }

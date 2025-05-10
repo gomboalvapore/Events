@@ -20,9 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-         tableBody.addEventListener('change', function(event) {
+        tableBody.addEventListener('change', function(event) {
             const target = event.target;
-            if (target.tagName === 'INPUT') {
+            if (target.tagName === 'INPUT' && target.type === 'checkbox') {
                 const row = target.closest('.data-row');
                 if (row) {
                     saveRowData(row);
@@ -58,10 +58,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function saveRowData(row) {
         const rowSuffix = row.dataset.rowSuffix;
         const playerNameInput = document.getElementById(`playerName${rowSuffix}`);
-        if(playerNameInput){
-             localStorage.setItem(`playerName${rowSuffix}`, playerNameInput.value);
+        if (playerNameInput) {
+            localStorage.setItem(`playerName${rowSuffix}`, playerNameInput.value);
         }
-
 
         const checkboxes = row.querySelectorAll('input[type="checkbox"]');
         checkboxes.forEach(checkbox => {
@@ -71,15 +70,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function loadRowData(rowSuffix) {
         const playerNameInput = document.getElementById(`playerName${rowSuffix}`);
-        if(playerNameInput){
-             const savedPlayerName = localStorage.getItem(`playerName${rowSuffix}`);
-              if (savedPlayerName) {
-                 playerNameInput.value = savedPlayerName;
-              }
+        if (playerNameInput) {
+            const savedPlayerName = localStorage.getItem(`playerName${rowSuffix}`);
+            if (savedPlayerName) {
+                playerNameInput.value = savedPlayerName;
+            }
         }
 
-
-        const checkboxes = document.querySelectorAll(`[id$="${rowSuffix}"]`); // Seleziona tutti gli elementi con ID che finiscono con rowSuffix
+        const checkboxes = document.querySelectorAll(`[id$="${rowSuffix}"]`);
         checkboxes.forEach(checkbox => {
             const savedState = localStorage.getItem(checkbox.id);
             if (savedState) {
