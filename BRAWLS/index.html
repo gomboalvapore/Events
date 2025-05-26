@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guild Data Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #444; /* Medium/dark grey for body background */
+            color: #eee; /* Light text color for contrast */
+        }
+        h1 {
+            color: #eee; /* Ensure heading is visible on dark background */
+            text-align: center;
+        }
+        table {
+            width: 80%; /* Maintain overall table width */
+            max-width: 500px; /* NEW: Max width for the table */
+            border-collapse: collapse;
+            margin: 20px auto; /* Center the table */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            background-color: #f2f2f2; /* Light grey for table background */
+        }
+        th, td {
+            border: 1px solid #ccc; /* Slightly lighter border */
+            padding: 12px;
+            text-align: left;
+            color: #333; /* Dark text color for table cells */
+        }
+        /* Specific column widths - ADJUSTED */
+        th:first-child, td:first-child {
+            width: 250px; /* Reduced from 350px */
+            min-width: 150px; /* Ensure a minimum width */
+        }
+        th:nth-child(2), td:nth-child(2) {
+            width: 70px; /* Changed from 120px to 150px */
+            min-width: 40px; /* Changed from 80px to 100px */
+        }
+
+        /* Darker grey for the first two header rows */
+        thead tr:nth-child(1) th,
+        thead tr:nth-child(2) th {
+            background-color: #d0d0d0; /* A slightly darker grey than #e0e0e0 */
+            color: #222; /* Darker text for better contrast */
+        }
+
+        input[type="text"] {
+            width: calc(100% - 10px); /* Keep it relative to cell width */
+            padding: 8px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #fff;
+            color: #333;
+        }
+        input[type="number"] {
+            width: 80px; /* This width is specific to the input, not the column */
+            padding: 8px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-align: center;
+            background-color: #fff;
+            color: #333;
+        }
+        .highlight-row {
+            background-color: #d4edda; /* Light green, as before */
+        }
+        #current-time {
+            font-weight: bold;
+            color: #777; /* Clock text remains dark for readability */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>BRAWLS NOTE</h1>
+
+    <table id="guildTable">
+        <thead>
+            <tr>
+                <th id="current-time"></th>
+                <th>Day Time<br>in Dominion</th>
+            </tr>
+            <tr>
+                <th>Player name</th>
+                <th>Last day<br> of task</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+
+    <script>
+        const STORAGE_KEY = 'guildTableData'; // Key for localStorage
+
+        // --- Clock Update Function ---
+        function updateClock() {
+            const now = new Date();
+            const utcHours = now.getUTCHours();
+            const utcMinutes = now.getUTCMinutes();
+            const utcDay = now.getUTCDate();
+
+            let displayHours = utcHours - 2;
+            if (displayHours < 0) {
+                displayHours += 24;
+            }
+
+            const formattedHours = String(displayHours).padStart(2, '0');
+            const formattedMinutes = String(utcMinutes).padStart(2, '0');
+
+            document.getElementById('current-time').textContent = `${formattedHours}:${formattedMinutes} - ${utcDay}`;
+        }
+
+        // --- Data Handling Functions ---
+
+        // Function to save data to localStorage
+        function saveTableData() {
+            const tableBody = document.querySelector('#guildTable tbody');
+            const rowData = [];
+            // Ensure we only save up to the number of rows currently displayed
+            const numRowsToSave = 12; // Adjusted to match the number of generated rows
+            
+            for (let i = 0; i < numRowsToSave; i++) {
+                const row = tableBody.rows[i];
+                if (row) { // Check if the row exists before trying to access its cells
+                    const nameInput = row.cells[0].querySelector('input[type="text"]');
+                    const dayInput = row.cells[1].querySelector('input[type="number"]');
+                    rowData.push({
+                        name: nameInput ? nameInput.value : '',
+                        day: dayInput ? dayInput.value : ''
+                    });
+                } else {
+                    rowData.push({ name: '', day: '' }); // Push empty data if row doesn't exist yet (shouldn't happen with correct numRowsToSave)
+                }
+            }
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(rowData));
+        }
+
+        // Function to load data from localStorage
+        function loadTableData() {
+            const storedData = localStorage.getItem(STORAGE_KEY);
+            if (storedData) {
+                return JSON.parse(storedData);
+            }
+            return null;
+        }
+
+        // --- Table Generation & Conditional Formatting ---
+
+        // Function to generate table rows
+        function generateTableRows(numRows) {
+            const tableBody = document.querySelector('#guildTable tbody');
+            const loadedData = loadTableData(); // Try to load saved data
+
+            for (let i = 0; i < numRows; i++) {
+                const row = tableBody.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+
+                // Textbox for player name (max 20 characters)
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+                nameInput.maxLength = 20;
+                nameInput.placeholder = 'Player Name';
+                nameInput.addEventListener('input', saveTableData); // Save on input
+                cell1.appendChild(nameInput);
+
+                // Textbox for day (numbers between 1 and 31)
+                const dayInput = document.createElement('input');
+                dayInput.type = 'number';
+                dayInput.min = 1;
+                dayInput.max = 31;
+                dayInput.placeholder = 'Day';
+                dayInput.addEventListener('input', checkRowCondition); // Check condition on input
+                dayInput.addEventListener('input', saveTableData); // Save on input
+                cell2.appendChild(dayInput);
+
+                // Populate with loaded data if available
+                if (loadedData && loadedData[i]) {
+                    nameInput.value = loadedData[i].name;
+                    dayInput.value = loadedData[i].day;
+                    checkRowCondition({ target: dayInput }); // Re-apply highlighting on load
+                }
+            }
+        }
+
+        // Function to check condition and highlight the row
+        function checkRowCondition(event) {
+            const inputElement = event.target;
+            const row = inputElement.closest('tr');
+
+            // Using getUTCDate() for consistency with the clock
+            const currentDay = new Date().getUTCDate();
+            const inputValue = parseInt(inputElement.value, 10);
+
+            if (!isNaN(inputValue) && inputValue >= 1 && inputValue <= 31 && inputValue === currentDay) {
+                row.classList.add('highlight-row');
+            } else {
+                row.classList.remove('highlight-row');
+            }
+        }
+
+        // --- Initialization ---
+        updateClock();
+        setInterval(updateClock, 60000); // Update every 60 seconds (1 minute)
+
+        // Generate the 12 input rows (total 14 rows, first 2 are headers)
+        generateTableRows(12); // <--- MODIFICATO QUI: da 8 a 12
+    </script>
+
+</body>
+</html>
