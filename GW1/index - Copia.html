@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guild Data Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #333; /* Medium/dark grey for body background */
+            color: #eee; /* Light text color for contrast */
+        }
+        h1 {
+            color: #eee; /* Ensure heading is visible on dark background */
+            text-align: center;
+        }
+        table {
+            width: 80%; /* Maintain overall table width */
+            max-width: 700px; /* Max width for the table */
+            border-collapse: collapse;
+            margin: 20px auto; /* Center the table */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            background-color: #f2f2f2; /* Light grey for table background */
+            table-layout: fixed; /* Forza la larghezza fissa delle colonne */
+        }
+        th, td {
+            border: 1px solid #ccc; /* Slightly lighter border */
+            padding: 12px;
+            text-align: left;
+            color: #333; /* Dark text color for table cells */
+            overflow: hidden; /* Nasconde il contenuto che eccede la larghezza fissa della cella */
+            text-overflow: ellipsis; /* Aggiunge "..." se il testo è troppo lungo (per celle di testo) */
+            white-space: nowrap; /* Previene il wrapping del testo nelle celle */
+        }
+        /* Darker grey for the first two header rows */
+        thead tr:nth-child(1) th,
+        thead tr:nth-child(2) th {
+            background-color: #d0d0d0;
+            color: #222;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #fff;
+            color: #333;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-align: center;
+            background-color: #fff;
+            color: #333;
+        }
+        /* Stile per la checkbox */
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+        .highlight-row {
+            background-color: #d4edda; /* Verde chiaro per la riga evidenziata */
+        }
+        #current-time {
+            font-weight: bold;
+            color: #333;
+            text-align: left; /* Allineato a sinistra per l'orologio */
+        }
+        #countdown-timer {
+            font-weight: bold;
+            color: #333;
+            text-align: right; /* Allineato a destra per il countdown */
+        }
+        /* Stili per la nuova tabella di configurazione */
+        #configTable {
+            margin-top: 40px;
+            background-color: #f2f2f2;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            width: 80%;
+            max-width: 700px;
+            margin: 40px auto 20px auto; /* Centra la tabella sotto l'altra */
+        }
+        #configTable th, #configTable td {
+            text-align: center;
+        }
+        #configTable input[type="number"],
+        #configTable select {
+            width: calc(100% - 16px); /* Per input con padding */
+            padding: 8px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #fff;
+            color: #333;
+        }
+        .alert-red {
+            color: red;
+        }
+        .alert-green {
+            color: #02FF14;
+        }
+        .alert-blue-cyan {
+            color: #00BCD4; /* Blue-cyan color */
+        }
+
+        /* Nuove classi per lo sfondo delle caselle "Alert Type" */
+        .alert-type-background-red {
+            background-color: red;
+            color: white; /* Testo bianco per contrasto */
+            font-weight: bold;
+        }
+        .alert-type-background-blue-cyan {
+            background-color: #00BCD4;
+            color: black; /* Testo nero per contrasto */
+            font-weight: bold;
+        }
+
+        /* Classe per il lampeggio (solo quando l'alert 2 è attivo) */
+        .alert-type-background-blinking.red {
+            background-color: red;
+            color: white;
+            font-weight: bold;
+        }
+        .alert-type-background-blinking.green {
+            background-color: #02FF14;
+            color: black;
+            font-weight: bold;
+        }
+
+        /* Classe per lo sfondo verde fisso di Alert 2 quando non attivo */
+        .alert-type-background-green-static {
+            background-color: #02FF14; /* Verde */
+            color: red; /* Testo rosso */
+            font-weight: bold;
+        }
+
+        /* Nuove classi per le righe della tabella principale */
+        .row-alert-red {
+            background-color: red;
+            color: white;
+        }
+        .row-alert-blue-cyan {
+            background-color: #00BCD4;
+            color: black;
+        }
+        .row-alert-blinking.red {
+            background-color: red;
+            color: white;
+        }
+        .row-alert-blinking.green {
+            background-color: #02FF14;
+            color: black;
+        }
+        .row-dark-grey {
+            background-color: #A9A9A9; /* Grigio scuro */
+            color: white; /* Testo bianco per contrasto */
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1 id="guild-data-heading">Guild Data
+        <span id="starts-in-alert" class="alert-red" style="font-size: 1em;"></span>
+        <span id="starts-in-blinking-alert" style="font-size: 1em;"></span>
+        <span id="ends-in-alert" class="alert-red" style="font-size: 1em;"></span> </h1>
+
+    <table id="guildTable">
+        <colgroup>
+            <col style="width: 30px;"> <col style="width: 300px;"> <col style="width: 80px;">  <col style="width: 80px;">  </colgroup>
+        <thead>
+            <tr>
+                <th id="current-time" colspan="2"></th>
+                <th id="countdown-timer" colspan="2"></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>Player name</th>
+                <th>Last day of task 1</th>
+                <th>Last day of task 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+
+    <h2 style="color: #eee; text-align: center; margin-top: 40px;">Alert Configuration</h2>
+    <table id="configTable">
+        <thead>
+            <tr>
+                <th>Alert Type</th>
+                <th>Countdown Reference</th>
+                <th>Lower Hour Bound (inclusive)</th>
+                <th>Upper Hour Bound (exclusive)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="alert1-type-cell">Alert 1 (Non-Blink)</td>
+                <td>
+                    <select id="alert1CountdownRef">
+                        <option value="starts in">starts in</option>
+                        <option value="ends in">ends in</option>
+                    </select>
+                </td>
+                <td><input type="number" id="alert1LowerHour" min="0" max="23" value="1"></td>
+                <td><input type="number" id="alert1UpperHour" min="1" max="24" value="2"></td>
+            </tr>
+            <tr>
+                <td id="alert2-type-cell">Alert 2 (Blinking)</td>
+                <td>
+                    <select id="alert2CountdownRef">
+                        <option value="starts in">starts in</option>
+                        <option value="ends in">ends in</option>
+                    </select>
+                </td>
+                <td><input type="number" id="alert2LowerHour" min="0" max="23" value="9"></td>
+                <td><input type="number" id="alert2UpperHour" min="1" max="24" value="10"></td>
+            </tr>
+            <tr>
+                <td id="alert3-type-cell">Alert 3 (Non-Blink)</td> <td>
+                    <select id="alert3CountdownRef">
+                        <option value="starts in">starts in</option>
+                        <option value="ends in">ends in</option>
+                    </select>
+                </td>
+                <td><input type="number" id="alert3LowerHour" min="0" max="23" value="1"></td>
+                <td><input type="number" id="alert3UpperHour" min="1" max="24" value="2"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
