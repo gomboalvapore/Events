@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Rat Manager Bookmarks</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            display: flex; /* Usa flexbox per le due colonne */
+            height: 100vh; /* Altezza piena della viewport */
+            overflow: hidden; /* Nasconde lo scroll della pagina principale */
+        }
+
+        #colonna-sinistra {
+            width: 130px; /* Larghezza fissa per la colonna dei preferiti */
+            background-color: #f0f0f0;
+            padding: 15px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto; /* Permette lo scroll se ci sono molti bookmarks */
+            flex-shrink: 0; /* Impedisce alla colonna di rimpicciolirsi */
+            transition: width 1.3s ease-in-out; /* Transizione fluida per la larghezza */
+        }
+
+        #colonna-sinistra.collapsed {
+            width: 20px; /* Larghezza ridotta */
+        }
+
+        #colonna-sinistra h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        #colonna-sinistra ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #colonna-sinistra li {
+            margin-bottom: 8px;
+        }
+
+        #colonna-sinistra a {
+            text-decoration: none;
+            color: #007bff;
+            display: block;
+            padding: 5px 0;
+            transition: color 0.2s;
+        }
+
+        #colonna-sinistra a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        #colonna-destra {
+            flex-grow: 1; /* Occupa lo spazio rimanente */
+            background-color: #fff;
+            position: relative; /* Per posizionare l'iframe */
+        }
+
+        #contenuto-iframe {
+            width: 100%;
+            height: 100%;
+            border: none; /* Rimuove il bordo predefinito dell'iframe */
+        }
+    </style>
+</head>
+<body>
+    <div id="colonna-sinistra">
+        <h2>Multi Rat Manager V1.0</h2>
+        <ul>
+            <li><a href="https://gomboalvapore.github.io/HW/Adventures/" target="contenuto-iframe">Adventures</a></li>
+            <li><a href="https://gomboalvapore.github.io/Events/SeasonRem1/" target="contenuto-iframe">Season Reminder</a></li>
+			<li><a href="https://gomboalvapore.github.io/Events/GW1/" target="contenuto-iframe">Guild War</a></li>
+			<li><a href="https://cr3-lola.github.io/Asgard/" target="contenuto-iframe">Asgard</a></li>
+			<li><a href="https://gomboalvapore.github.io/Events/BRAWLS/" target="contenuto-iframe">BRAWLS</a></li>
+            <li><a href="https://gomboalvapore.github.io/Events/TOP_v1/" target="contenuto-iframe">T.o.P.v1</a></li>
+            <li><a href="https://gomboalvapore.github.io/Events/TOP%20Ranking/" target="contenuto-iframe">T.o.P. Ranking</a></li>
+        </ul>
+    </div>
+
+    <div id="colonna-destra">
+        <iframe id="contenuto-iframe" name="contenuto-iframe" src="rats.html"></iframe>
+    </div>
+
+    <script>
+        const colonnaSinistra = document.getElementById('colonna-sinistra');
+        let collapseTimer;
+        let expandTimer;
+
+        // Funzione per ridurre la larghezza della colonna
+        function collapseSidebar() {
+            colonnaSinistra.classList.add('collapsed');
+        }
+
+        // Funzione per ripristinare la larghezza originale della colonna
+        function expandSidebar() {
+            colonnaSinistra.classList.remove('collapsed');
+        }
+
+        // Evento mouseleave: il mouse esce dalla colonna sinistra
+        colonnaSinistra.addEventListener('mouseleave', () => {
+            clearTimeout(expandTimer); // Cancella l'eventuale timer di espansione
+            collapseTimer = setTimeout(collapseSidebar, 900); // Avvia il timer per la riduzione dopo 2 secondi
+        });
+
+        // Evento mouseenter: il mouse entra nella colonna sinistra
+        colonnaSinistra.addEventListener('mouseenter', () => {
+            clearTimeout(collapseTimer); // Cancella l'eventuale timer di riduzione
+            expandTimer = setTimeout(expandSidebar, 150); // Avvia il timer per l'espansione dopo 100ms
+        });
+    </script>
+</body>
+</html>
