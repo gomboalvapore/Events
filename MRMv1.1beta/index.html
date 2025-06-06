@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Rat Manager Bookmarks</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            display: flex; /* Usa flexbox per le due colonne */
+            height: 100vh; /* Altezza piena della viewport */
+            overflow: hidden; /* Nasconde lo scroll della pagina principale */
+        }
+
+        #colonna-sinistra {
+            width: 130px; /* Larghezza fissa per la colonna dei preferiti */
+            background-color: #f0f0f0;
+            padding: 15px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto; /* Permette lo scroll se ci sono molti bookmarks */
+            flex-shrink: 0; /* Impedisce alla colonna di rimpicciolirsi */
+            transition: width 1.3s ease-in-out; /* Transizione fluida per la larghezza */
+            position: relative; /* Necessario per posizionare la checkbox se non è static */
+        }
+
+        #colonna-sinistra.collapsed {
+            width: 20px; /* Larghezza ridotta */
+        }
+
+        /* Stile per le voci del menu per restare su singola riga*/
+        #colonna-sinistra li a {
+            white-space: nowrap; /* Evita che il testo vada a capo*/
+            overflow: hidden;    /* Nasconde il testo che esce dal contenitore*/
+            text-overflow: ellipsis; /* Aggiunge i puntini di sospensione (...) se il testo è troppo lungo*/
+            display: block;
+            padding: 5px 0;
+            transition: color 0.2s;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        #colonna-sinistra a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        #colonna-destra {
+            flex-grow: 1; /* Occupa lo spazio rimanente */
+            background-color: #fff;
+            position: relative; /* Per posizionare l'iframe */
+        }
+
+        #contenuto-iframe {
+            width: 100%;
+            height: 100%;
+            border: none; /* Rimuove il bordo predefinito dell'iframe */
+        }
+
+        /* Stili per la checkbox "Blocca Menu" */
+        #lock-sidebar-container, #always-closed-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px; /* Spazio sotto le checkbox */
+        }
+
+        #lock-sidebar-checkbox, #always-closed-checkbox {
+            width: 20px;  /* Dimensione base per le checkbox*/
+            height: 20px; /* Dimensione base per le checkbox*/
+            cursor: pointer;
+        }
+
+        #lock-sidebar-checkbox {
+            accent-color: #A52A2A; /* Color mattone */
+        }
+
+        #always-closed-checkbox {
+            accent-color: #40E0D0; /* Color turchese */
+        }
+
+        #lock-sidebar-label, #always-closed-label {
+            margin-left: 5px; /* Spazio tra checkbox e etichetta*/
+            color: #333;
+            font-size: 0.9em;
+        }
+
+        #colonna-sinistra h2 {
+            margin-top: 10px; /* Aggiunto un po' di spazio dopo le checkbox */
+            color: #333;
+        }
+
+        #colonna-sinistra ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #colonna-sinistra li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="colonna-sinistra">
+        <div id="lock-sidebar-container">
+            <input type="checkbox" id="lock-sidebar-checkbox">
+            <label for="lock-sidebar-checkbox" id="lock-sidebar-label">Lock Menu</label>
+        </div>
+        <div id="always-closed-container">
+            <input type="checkbox" id="always-closed-checkbox">
+            <label for="always-closed-checkbox" id="always-closed-label">Closed</label>
+        </div>
+        <h2>Multi Rat Manager V1.2</h2>
+        <ul>
+            <li><a href="https://gomboalvapore.github.io/HW/Adventures/" target="contenuto-iframe">Adventures</a></li>
+            <li><a href="https://gomboalvapore.github.io/Events/SeasonRem1/" target="contenuto-iframe">Season Reminder</a></li>
+            <li><a href="https://gomboalvapore.github.io/Events/GW1/" target="contenuto-iframe">Guild War</a></li>
+            <li><a href="https://cr3-lola.github.io/Asgard/" target="contenuto-iframe">Asgard</a></li>
+            <li><a href="https://gomboalvapore.github.io/Events/BRAWLS/" target="contenuto-iframe">BRAWLS</a></li>
+            <li><a href="https://gomboalvapore.github.io/Events/TOP_v1/" target="contenuto-iframe">T.o.P.v1</a></li>
+            <li><a href="https://gomboalvapore.github.io/Events/TOP%20Ranking/" target="contenuto-iframe">T.o.P. Ranking</a></li>
+        </ul>
+    </div>
+
+    <div id="colonna-destra">
+        <iframe id="contenuto-iframe" name="contenuto-iframe" src="rats.html"></iframe>
+    </div>
+
+    <script>
+        const colonnaSinistra = document.getElementById('colonna-sinistra');
+        const lockCheckbox = document.getElementById('lock-sidebar-checkbox');
+        const alwaysClosedCheckbox = document.getElementById('always-closed-checkbox'); // Nuova checkbox
+        let collapseTimer;
+        let expandTimer;
+
+        // Funzione per ridurre la larghezza della colonna
+        function collapseSidebar() {
+            // La logica di collassamento/espansione automatica si attiva solo se NESSUNA checkbox è spuntata
+            if (!lockCheckbox.checked && !alwaysClosedCheckbox.checked) {
+                colonnaSinistra.classList.add('collapsed');
+                colonnaSinistra.style.width = ''; // Rimuovi larghezza inline
+            }
+        }
+
+        // Funzione per ripristinare la larghezza originale della colonna
+        function expandSidebar() {
+            // La logica di collassamento/espansione automatica si attiva solo se NESSUNA checkbox è spuntata
+            if (!lockCheckbox.checked && !alwaysClosedCheckbox.checked) {
+                colonnaSinistra.classList.remove('collapsed');
+                colonnaSinistra.style.width = ''; // Rimuovi larghezza inline
+            }
+        }
+
+        // Evento mouseleave: il mouse esce dalla colonna sinistra
+        colonnaSinistra.addEventListener('mouseleave', () => {
+            if (!lockCheckbox.checked && !alwaysClosedCheckbox.checked) {
+                clearTimeout(expandTimer);
+                collapseTimer = setTimeout(collapseSidebar, 900);
+            }
+        });
+
+        // Evento mouseenter: il mouse entra nella colonna sinistra
+        colonnaSinistra.addEventListener('mouseenter', () => {
+            if (!lockCheckbox.checked && !alwaysClosedCheckbox.checked) {
+                clearTimeout(collapseTimer);
+                expandTimer = setTimeout(expandSidebar, 150);
+            }
+        });
+
+        // Funzione per gestire lo stato della colonna in base alle checkbox
+        function updateSidebarState() {
+            clearTimeout(expandTimer);
+            clearTimeout(collapseTimer);
+            colonnaSinistra.style.transition = 'width 1.3s ease-in-out'; // Riabilita sempre la transizione all'inizio
+
+            if (lockCheckbox.checked) {
+                // Blocca la colonna nella sua larghezza attuale
+                colonnaSinistra.style.transition = 'none'; // Disabilita la transizione temporaneamente
+                colonnaSinistra.style.width = getComputedStyle(colonnaSinistra).width;
+                colonnaSinistra.classList.remove('collapsed'); // Rimuovi la classe collapsed
+            } else if (alwaysClosedCheckbox.checked) {
+                // Mantieni la colonna sempre chiusa
+                colonnaSinistra.classList.add('collapsed');
+                colonnaSinistra.style.width = ''; // Lascia che il CSS gestisca la larghezza
+            } else {
+                // Nessuna checkbox spuntata: ripristina il comportamento normale
+                colonnaSinistra.classList.remove('collapsed'); // Assicurati che non sia "collapsed" inizialmente
+                colonnaSinistra.style.width = ''; // Lascia che il CSS gestisca la larghezza
+                // Puoi forzare un'espansione o lasciare che il mouseenter/mouseleave si occupi
+                // Aggiungiamo un piccolo delay per dare tempo alla transizione
+                setTimeout(() => {
+                    // Potresti voler forzare lo stato "aperto" qui se non ci sono interazioni mouse
+                    // o lasciare che l'utente muova il mouse per riattivare la logica
+                    // Ad esempio: expandSidebar(); // Rimuovi il commento se vuoi che si apra subito
+                }, 50);
+            }
+        }
+
+        // Evento change per la checkbox "Blocca Menu"
+        lockCheckbox.addEventListener('change', () => {
+            if (lockCheckbox.checked) {
+                alwaysClosedCheckbox.checked = false; // Deseleziona l'altra checkbox
+            }
+            updateSidebarState(); // Aggiorna lo stato della sidebar
+        });
+
+        // Evento change per la checkbox "Sempre Chiuso"
+        alwaysClosedCheckbox.addEventListener('change', () => {
+            if (alwaysClosedCheckbox.checked) {
+                lockCheckbox.checked = false; // Deseleziona l'altra checkbox
+            }
+            updateSidebarState(); // Aggiorna lo stato della sidebar
+        });
+
+        // Esegui la funzione all'avvio per impostare lo stato iniziale (nel caso una fosse già spuntata)
+        updateSidebarState();
+    </script>
+</body>
+</html>

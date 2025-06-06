@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Rat Manager</title>
+    <style>
+        body {
+            background-color: #050306;
+            color: white; /* Per assicurare che il testo sia visibile su sfondo scuro */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Allinea il contenuto in alto */
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #FFA500; /* Giallo-arancio brillante */
+            width: 100%; /* La scritta occupa tutta la larghezza disponibile */
+            text-align: center; /* Centra il testo all'interno della larghezza */
+            padding: 20px 0; /* Aggiungi un po' di padding sopra e sotto il titolo */
+            box-sizing: border-box;
+            margin-top: 0; /* Rimuovi il margine superiore predefinito */
+            
+            /* NUOVE PROPRIETÀ PER IL RIDIMENSIONAMENTO FLESSIBILE */
+            font-size: clamp(2.5rem, 10vw, 10rem); /* Min 2.5rem, preferito 10vw, Max 10rem */
+            /* La funzione clamp() imposta una dimensione minima, una dimensione preferita e una dimensione massima.
+               Questo significa che il font sarà almeno 2.5rem, cercherà di essere il 10% della larghezza della viewport,
+               ma non supererà mai i 10rem. Questo aiuta a gestire le dimensioni estreme. */
+            
+            line-height: 1.2; /* Aumentato leggermente per permettere al testo di andare a capo */
+            white-space: normal; /* Permette al testo di andare a capo */
+            overflow: visible; /* Rende il contenuto visibile anche se esce dal contenitore (ma con white-space: normal non dovrebbe succedere) */
+            text-overflow: clip; /* Annulla i puntini di sospensione */
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 5px; /* <--- Modifica qui: ho ridotto il margine superiore */
+        }
+    </style>
+</head>
+<body>
+    <h1>Multi Rat Manager</h1>
+    <img src="rats.jpeg" alt="Un'immagine di ratti">
+</body>
+</html>
