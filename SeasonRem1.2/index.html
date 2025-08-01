@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Season Task Log</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>Season Task Log <span id="countdown"></span></h1>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>player name</th>
+                    <th>daily tasks</th>
+                    <th>3 day tasks</th>
+                    <th>weekly tasks</th>
+                    <th class="reset-header" data-reset-target="dailyTasks">rst 1day</th>
+                    <th class="reset-header" data-reset-target="3dayTasks">rst 3day</th>
+                    <th class="reset-header" data-reset-target="weeklyTasks">rst week</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr class="data-row" data-row-suffix="_row1" data-row-number="1">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row1" class="name-toggle">
+                            <input type="text" id="playerName_row1" value="">
+                        </div>
+                        <span class="row-number">1</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row1">
+                        <input type="checkbox" id="dailyTask2_row1">
+                        <input type="checkbox" id="dailyTask3_row1">
+                        <input type="checkbox" id="dailyTask4_row1" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row1">
+                        <input type="checkbox" id="3dayTask2_row1">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row1">
+                        <input type="checkbox" id="weeklyTask2_row1">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row2" data-row-number="2">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row2" class="name-toggle">
+                            <input type="text" id="playerName_row2" value="">
+                        </div>
+                        <span class="row-number">2</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row2">
+                        <input type="checkbox" id="dailyTask2_row2">
+                        <input type="checkbox" id="dailyTask3_row2">
+                        <input type="checkbox" id="dailyTask4_row2" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row2">
+                        <input type="checkbox" id="3dayTask2_row2">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row2">
+                        <input type="checkbox" id="weeklyTask2_row2">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row3" data-row-number="3">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row3" class="name-toggle">
+                            <input type="text" id="playerName_row3" value="">
+                        </div>
+                        <span class="row-number">3</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row3">
+                        <input type="checkbox" id="dailyTask2_row3">
+                        <input type="checkbox" id="dailyTask3_row3">
+                        <input type="checkbox" id="dailyTask4_row3" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row3">
+                        <input type="checkbox" id="3dayTask2_row3">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row3">
+                        <input type="checkbox" id="weeklyTask2_row3">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row4" data-row-number="4">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row4" class="name-toggle">
+                            <input type="text" id="playerName_row4" value="">
+                        </div>
+                        <span class="row-number">4</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row4">
+                        <input type="checkbox" id="dailyTask2_row4">
+                        <input type="checkbox" id="dailyTask3_row4">
+                        <input type="checkbox" id="dailyTask4_row4" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row4">
+                        <input type="checkbox" id="3dayTask2_row4">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row4">
+                        <input type="checkbox" id="weeklyTask2_row4">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row5" data-row-number="5">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row5" class="name-toggle">
+                            <input type="text" id="playerName_row5" value="">
+                        </div>
+                        <span class="row-number">5</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row5">
+                        <input type="checkbox" id="dailyTask2_row5">
+                        <input type="checkbox" id="dailyTask3_row5">
+                        <input type="checkbox" id="dailyTask4_row5" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row5">
+                        <input type="checkbox" id="3dayTask2_row5">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row5">
+                        <input type="checkbox" id="weeklyTask2_row5">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row6" data-row-number="6">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row6" class="name-toggle">
+                            <input type="text" id="playerName_row6" value="">
+                        </div>
+                        <span class="row-number">6</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row6">
+                        <input type="checkbox" id="dailyTask2_row6">
+                        <input type="checkbox" id="dailyTask3_row6">
+                        <input type="checkbox" id="dailyTask4_row6" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row6">
+                        <input type="checkbox" id="3dayTask2_row6">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row6">
+                        <input type="checkbox" id="weeklyTask2_row6">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row7" data-row-number="7">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row7" class="name-toggle">
+                            <input type="text" id="playerName_row7" value="">
+                        </div>
+                        <span class="row-number">7</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row7">
+                        <input type="checkbox" id="dailyTask2_row7">
+                        <input type="checkbox" id="dailyTask3_row7">
+                        <input type="checkbox" id="dailyTask4_row7" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row7">
+                        <input type="checkbox" id="3dayTask2_row7">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row7">
+                        <input type="checkbox" id="weeklyTask2_row7">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row8" data-row-number="8">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row8" class="name-toggle">
+                            <input type="text" id="playerName_row8" value="">
+                        </div>
+                        <span class="row-number">8</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row8">
+                        <input type="checkbox" id="dailyTask2_row8">
+                        <input type="checkbox" id="dailyTask3_row8">
+                        <input type="checkbox" id="dailyTask4_row8" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row8">
+                        <input type="checkbox" id="3dayTask2_row8">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row8">
+                        <input type="checkbox" id="weeklyTask2_row8">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row9" data-row-number="9">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row9" class="name-toggle">
+                            <input type="text" id="playerName_row9" value="">
+                        </div>
+                        <span class="row-number">9</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row9">
+                        <input type="checkbox" id="dailyTask2_row9">
+						<input type="checkbox" id="dailyTask3_row9">
+                        <input type="checkbox" id="dailyTask4_row9" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row9">
+                        <input type="checkbox" id="3dayTask2_row9">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row9">
+                        <input type="checkbox" id="weeklyTask2_row9">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row10" data-row-number="10">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row10" class="name-toggle">
+                            <input type="text" id="playerName_row10" value="">
+                        </div>
+                        <span class="row-number">10</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row10">
+                        <input type="checkbox" id="dailyTask2_row10">
+						<input type="checkbox" id="dailyTask3_row10">
+                        <input type="checkbox" id="dailyTask4_row10" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row10">
+                        <input type="checkbox" id="3dayTask2_row10">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row10">
+                        <input type="checkbox" id="weeklyTask2_row10">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row11" data-row-number="11">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row11" class="name-toggle">
+                            <input type="text" id="playerName_row11" value="">
+                        </div>
+                        <span class="row-number">11</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row11">
+						<input type="checkbox" id="dailyTask2_row11">
+						<input type="checkbox" id="dailyTask3_row11">
+                        <input type="checkbox" id="dailyTask4_row11" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row11">
+                        <input type="checkbox" id="3dayTask2_row11">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row11">
+                        <input type="checkbox" id="weeklyTask2_row11">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button"
+                            data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row12" data-row-number="12">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row12" class="name-toggle">
+                            <input type="text" id="playerName_row12" value="">
+                        </div>
+                        <span class="row-number">12</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row12">
+                        <input type="checkbox" id="dailyTask2_row12">
+                        <input type="checkbox" id="dailyTask3_row12">
+                        <input type="checkbox" id="dailyTask4_row12" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row12">
+                        <input type="checkbox" id="3dayTask2_row12">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row12">
+                        <input type="checkbox" id="weeklyTask2_row12">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button"
+                            data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row13" data-row-number="13">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row13" class="name-toggle">
+                            <input type="text" id="playerName_row13" value="">
+                        </div>
+                        <span class="row-number">13</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row13">
+                        <input type="checkbox" id="dailyTask2_row13">
+                        <input type="checkbox" id="dailyTask3_row13">
+                        <input type="checkbox" id="dailyTask4_row13" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row13">
+                        <input type="checkbox" id="3dayTask2_row13">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row13">
+                        <input type="checkbox" id="weeklyTask2_row13">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button"
+                            data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row14" data-row-number="14">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row14" class="name-toggle">
+                            <input type="text" id="playerName_row14" value="">
+                        </div>
+                        <span class="row-number">14</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row14">
+                        <input type="checkbox" id="dailyTask2_row14">
+                        <input type="checkbox" id="dailyTask3_row14">
+                        <input type="checkbox" id="dailyTask4_row14" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row14">
+                        <input type="checkbox" id="3dayTask2_row14">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row14">
+                        <input type="checkbox" id="weeklyTask2_row14">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button"
+                            data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row15" data-row-number="15">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row15" class="name-toggle">
+                            <input type="text" id="playerName_row15" value="">
+                        </div>
+                        <span class="row-number">15</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row15">
+                        <input type="checkbox" id="dailyTask2_row15">
+                        <input type="checkbox" id="dailyTask3_row15">
+                        <input type="checkbox" id="dailyTask4_row15" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row15">
+                        <input type="checkbox" id="3dayTask2_row15">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row15">
+                        <input type="checkbox" id="weeklyTask2_row15">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button"
+                            data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row16" data-row-number="16">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row16" class="name-toggle">
+                            <input type="text" id="playerName_row16" value="">
+                        </div>
+                        <span class="row-number">16</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row16">
+                        <input type="checkbox" id="dailyTask2_row16">
+                        <input type="checkbox" id="dailyTask3_row16">
+                        <input type="checkbox" id="dailyTask4_row16" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row16">
+                        <input type="checkbox" id="3dayTask2_row16">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row16">
+                        <input type="checkbox" id="weeklyTask2_row16">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button"
+                            data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row17" data-row-number="17">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row17" class="name-toggle">
+                            <input type="text" id="playerName_row17" value="">
+                        </div>
+                        <span class="row-number">17</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row17">
+                        <input type="checkbox" id="dailyTask2_row17">
+                        <input type="checkbox" id="dailyTask3_row17">
+                        <input type="checkbox" id="dailyTask4_row17" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row17">
+                        <input type="checkbox" id="3dayTask2_row17">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row17">
+                        <input type="checkbox" id="weeklyTask2_row17">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button"
+                            data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row18" data-row-number="18">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row18" class="name-toggle">
+                            <input type="text" id="playerName_row18" value="">
+                        </div>
+                        <span class="row-number">18</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row18">
+                        <input type="checkbox" id="dailyTask2_row18">
+                        <input type="checkbox" id="dailyTask3_row18">
+                        <input type="checkbox" id="dailyTask4_row18" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row18">
+                        <input type="checkbox" id="3dayTask2_row18">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row18">
+                        <input type="checkbox" id="weeklyTask2_row18">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button"
+                            data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row19" data-row-number="19">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row19" class="name-toggle">
+                            <input type="text" id="playerName_row19" value="">
+                        </div>
+                        <span class="row-number">19</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row19">
+                        <input type="checkbox" id="dailyTask2_row19">
+                        <input type="checkbox" id="dailyTask3_row19">
+                        <input type="checkbox" id="dailyTask4_row19" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row19">
+                        <input type="checkbox" id="3dayTask2_row19">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row19">
+                        <input type="checkbox" id="weeklyTask2_row19">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button"
+                            data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+                <tr class="data-row" data-row-suffix="_row20" data-row-number="20">
+                    <td>
+                        <div class="name-container">
+                            <input type="checkbox" id="playerNameToggle_row20" class="name-toggle">
+                            <input type="text" id="playerName_row20" value="">
+                        </div>
+                        <span class="row-number">20</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="dailyTask1_row20">
+                        <input type="checkbox" id="dailyTask2_row20">
+                        <input type="checkbox" id="dailyTask3_row20">
+                        <input type="checkbox" id="dailyTask4_row20" class="colored-checkbox">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="3dayTask1_row20">
+                        <input type="checkbox" id="3dayTask2_row20">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="weeklyTask1_row20">
+                        <input type="checkbox" id="weeklyTask2_row20">
+                    </td>
+                    <td class="reset-cell"><button class="reset-button"
+                            data-reset-target="dailyTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="3dayTasks">Reset</button></td>
+                    <td class="reset-cell"><button class="reset-button" data-reset-target="weeklyTasks">Reset</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

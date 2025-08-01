@@ -1,0 +1,167 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* Spazio tra il titolo e il countdown */
+}
+
+#countdown {
+    font-size: 0.7em;
+    color: #dc3545; /* Colore per il countdown */
+    font-weight: bold;
+    background-color: #fff3cd; /* Sfondo leggero per il countdown */
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ffc107;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin: 0 auto;
+    width: 98%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0 auto;
+    font-size: 0.9em;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 6px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+th {
+    background-color: #e9ecef;
+    font-weight: bold;
+    color: #333;
+}
+
+.data-row td:nth-child(1) {
+    background-color: #e0f7fa;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.name-container {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.name-toggle {
+    min-width: 20px;
+    min-height: 20px;
+    cursor: pointer;
+}
+
+.name-container input[type="text"] {
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    padding: 4px;
+    background-color: white;
+    font-weight: bold;
+    color: #333;
+    transition: background-color 0.2s ease;
+    font-size: 1.4em;
+    text-align: center;
+}
+
+.name-container input[type="text"].active {
+    background-color: #e8f5e9;
+}
+
+.row-number {
+    font-size: 0.8em;
+    font-weight: normal;
+    color: #555;
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+}
+
+.reset-cell {
+    text-align: center;
+    vertical-align: middle;
+    background-color: #f2f2f2;
+}
+
+.reset-button {
+    padding: 4px 8px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: background-color 0.3s ease;
+}
+
+.reset-button:hover {
+    background-color: #c82333;
+}
+
+/* Nuovo stile per le intestazioni cliccabili per il reset */
+.reset-header {
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-bottom-color 0.3s ease;
+}
+
+.reset-header:hover {
+    background-color: #555;
+    color: white;
+    border-bottom: 3px solid #ffc107;
+}
+
+/* Stile per le checkbox */
+td input[type="checkbox"] {
+    margin: 0 auto;
+    vertical-align: middle;
+}
+
+/* Stile specifico per la checkbox colorata */
+.colored-checkbox {
+    accent-color: #ffc107;
+    box-shadow: 0 0 0 2px #ffc107;
+}
+
+.colored-checkbox:checked {
+    accent-color: #40e0d0;
+    box-shadow: 0 0 0 2px #40e0d0;
+}
+
+/* Colori delle colonne */
+.data-row td:nth-child(2) {
+    background-color: #fff9c4;
+}
+
+.data-row td:nth-child(3) {
+    background-color: #f8bbd0;
+}
+
+.data-row td:nth-child(4) {
+    background-color: #c8e6c9;
+}
