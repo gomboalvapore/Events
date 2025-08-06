@@ -1,5 +1,5 @@
 const STORAGE_KEY = 'guildTableData'; // Key for localStorage
-const NUM_ROWS = 24; // MODIFICATO: Da 12 a 24
+const NUM_ROWS = 28; // MODIFICATO: Da 12 a 28
 
 // --- Clock Update Function ---
 function updateClock() {
@@ -126,5 +126,6 @@ function checkRowCondition(event) {
 // --- Initialization ---
 updateClock();
 setInterval(updateClock, 60000); // Update every 60 seconds (1 minute)
+
 
 generateTableRows(NUM_ROWS);
