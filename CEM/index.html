@@ -45,7 +45,7 @@
             background-color: #e9ecef;
             text-align: center;
             padding: 10px;
-            white-space: pre-wrap; /* Permette il wrapping del testo */
+            white-space: pre-wrap;
         }
 
         .player-name-cell {
@@ -174,7 +174,7 @@
 
         .header-inputs-group input, .header-inputs-group textarea {
             width: 120px;
-            height: auto; /* Permette all'altezza di adattarsi */
+            height: auto;
             margin: 5px;
             padding: 5px;
             box-sizing: border-box;
@@ -197,7 +197,7 @@
                 <label for="cols">Columns:</label>
                 <input type="number" id="cols" value="4" min="2">
 
-                <button onclick="createGrid()">Apply and Create Grid</button>
+                <button onclick="createGridAndSaveConfig()">Apply and Create Grid</button>
             </div>
 
             <hr style="width: 80%; border: 1px solid #ccc; margin: 15px 0;">
@@ -219,10 +219,12 @@
     <script>
         const STORAGE_KEY = 'customGridData';
         const STORAGE_KEY_HEADERS = 'customGridHeaders';
+        const STORAGE_KEY_CONFIG = 'customGridConfig';
 
         document.addEventListener('DOMContentLoaded', () => {
             updateClock();
             setInterval(updateClock, 60000);
+            loadConfigData();
             createHeaderInputs();
             createGrid();
         });
@@ -245,7 +247,6 @@
             return lettersOnly.length >= minCount;
         }
 
-        // Funzione per salvare i dati su localStorage
         function saveGridData() {
             const gridContainer = document.getElementById('grid-container');
             const cols = parseInt(document.getElementById('cols').value, 10);
@@ -269,7 +270,6 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         }
 
-        // Funzione per caricare i dati da localStorage
         function loadGridData() {
             const storedData = localStorage.getItem(STORAGE_KEY);
             return storedData ? JSON.parse(storedData) : [];
@@ -295,6 +295,23 @@
                 return JSON.parse(storedHeaders);
             }
             return { row1: [], row2: [] };
+        }
+
+        function saveConfigData() {
+            const config = {
+                rows: document.getElementById('rows').value,
+                cols: document.getElementById('cols').value
+            };
+            localStorage.setItem(STORAGE_KEY_CONFIG, JSON.stringify(config));
+        }
+
+        function loadConfigData() {
+            const storedConfig = localStorage.getItem(STORAGE_KEY_CONFIG);
+            if (storedConfig) {
+                const config = JSON.parse(storedConfig);
+                document.getElementById('rows').value = config.rows;
+                document.getElementById('cols').value = config.cols;
+            }
         }
 
         function checkRowCondition(playerRowIndex) {
@@ -343,7 +360,6 @@
             const cols = parseInt(document.getElementById('cols').value, 10);
             const gridContainer = document.getElementById('grid-container');
             const loadedData = loadGridData();
-            const loadedHeaders = loadHeaderData();
 
             gridContainer.innerHTML = '';
             gridContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
@@ -353,7 +369,6 @@
             const header2Inputs = document.querySelectorAll('#header-row-2-inputs-container input');
             const header2Names = Array.from(header2Inputs).map(input => input.value);
 
-
             for (let i = 0; i < rows; i++) {
                 for (let j = 0; j < cols; j++) {
                     const cell = document.createElement('div');
@@ -361,10 +376,10 @@
 
                     if (i === 0) {
                         cell.classList.add('header-cell');
-                        cell.textContent = header1Names[j] || `Header Gen. ${j + 1}`;
+                        cell.textContent = header1Names[j] || '';
                     } else if (i === 1) {
                         cell.classList.add('header-cell');
-                        cell.textContent = header2Names[j] || `Header ${j + 1}`;
+                        cell.textContent = header2Names[j] || '';
                     } else {
                         const playerIndex = i - 2;
                         const loadedRow = loadedData[playerIndex];
@@ -427,34 +442,30 @@
             header2Container.innerHTML = '';
 
             for (let i = 0; i < cols; i++) {
-                // Header Row 1
                 const input1 = document.createElement('textarea');
                 input1.rows = 2;
                 if (i === 0) {
                     input1.placeholder = 'Name of Event';
-                    input1.value = 'Name of Event';
+                    input1.value = loadedHeaders.row1[i] || 'Name of Event';
                 } else {
                     input1.placeholder = 'Last Day of Task';
-                    input1.value = 'Last Day of Task';
+                    input1.value = loadedHeaders.row1[i] || 'Last Day of Task';
                 }
-                if (loadedHeaders.row1[i]) input1.value = loadedHeaders.row1[i];
                 input1.addEventListener('input', () => {
                     saveHeaderData();
                     createGrid();
                 });
                 header1Container.appendChild(input1);
 
-                // Header Row 2
                 const input2 = document.createElement('input');
                 input2.type = 'text';
                 if (i === 0) {
                     input2.placeholder = 'Player Name';
-                    input2.value = 'Player Name';
+                    input2.value = loadedHeaders.row2[i] || 'Player Name';
                 } else {
                     input2.placeholder = `Task ${i}`;
-                    input2.value = `Task ${i}`;
+                    input2.value = loadedHeaders.row2[i] || `Task ${i}`;
                 }
-                if (loadedHeaders.row2[i]) input2.value = loadedHeaders.row2[i];
                 input2.addEventListener('input', () => {
                     saveHeaderData();
                     createGrid();
@@ -463,10 +474,13 @@
             }
         }
 
-        document.getElementById('cols').addEventListener('change', () => {
+        function createGridAndSaveConfig() {
+            saveConfigData();
             createHeaderInputs();
             createGrid();
-        });
+        }
+
+        document.getElementById('cols').addEventListener('change', createHeaderInputs);
 
         document.getElementById('toggle-controls-btn').addEventListener('click', () => {
             const controlsPanel = document.getElementById('controls-panel');
