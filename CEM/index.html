@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Dynamic Grid</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+
+        #time-display {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #555;
+            text-align: center;
+        }
+
+        #grid-container {
+            display: grid;
+            border: 1px solid #ccc;
+            gap: 1px;
+            background-color: #ccc;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 80px;
+        }
+
+        .grid-cell {
+            background-color: #fff;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+
+        .header-cell {
+            font-weight: bold;
+            background-color: #e9ecef;
+            text-align: center;
+            padding: 10px;
+            white-space: pre-wrap; /* Permette il wrapping del testo */
+        }
+
+        .player-name-cell {
+            padding: 0;
+        }
+
+        .player-name-cell input {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            border: none;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .day-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            background-color: #fff;
+        }
+
+        .day-cell input {
+            width: 50%;
+            height: 100%;
+            box-sizing: border-box;
+            border: none;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .status-button {
+            font-size: 1.2em;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0 5px;
+        }
+
+        .highlight-row .grid-cell {
+            background-color: #d4edda;
+        }
+
+        /* Fixed controls at the bottom */
+        .fixed-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: #fff;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+        }
+
+        #toggle-controls-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+        }
+
+        .controls-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            background-color: #fff;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .controls-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .controls-row label {
+            margin: 5px 10px;
+        }
+
+        .controls-row input[type="number"], .controls-row input[type="text"] {
+            width: 80px;
+            margin: 5px 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .controls-row button {
+            margin: 5px 10px;
+            padding: 8px 15px;
+            border: none;
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .header-inputs-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .header-inputs-group h3 {
+            width: 100%;
+            text-align: center;
+            margin: 5px 0;
+        }
+
+        .header-inputs-group input, .header-inputs-group textarea {
+            width: 120px;
+            height: auto; /* Permette all'altezza di adattarsi */
+            margin: 5px;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="time-display"></div>
+    <div id="grid-container"></div>
+
+    <div class="fixed-bottom">
+        <button id="toggle-controls-btn">Show Controls</button>
+
+        <div id="controls-panel" class="controls-container">
+            <div class="controls-row">
+                <label for="rows">Rows (incl. headers):</label>
+                <input type="number" id="rows" value="8" min="3">
+
+                <label for="cols">Columns:</label>
+                <input type="number" id="cols" value="4" min="2">
+
+                <button onclick="createGrid()">Apply and Create Grid</button>
+            </div>
+
+            <hr style="width: 80%; border: 1px solid #ccc; margin: 15px 0;">
+
+            <div class="header-inputs-group">
+                <h3>Header Row 1</h3>
+                <div id="header-row-1-inputs-container"></div>
+            </div>
+
+            <hr style="width: 80%; border: 1px solid #ccc; margin: 15px 0;">
+
+            <div class="header-inputs-group">
+                <h3>Header Row 2</h3>
+                <div id="header-row-2-inputs-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'customGridData';
+        const STORAGE_KEY_HEADERS = 'customGridHeaders';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateClock();
+            setInterval(updateClock, 60000);
+            createHeaderInputs();
+            createGrid();
+        });
+
+        function getDominionDate() {
+            const now = new Date();
+            now.setUTCHours(now.getUTCHours() - 2);
+            return now;
+        }
+
+        function updateClock() {
+            const dominionTime = getDominionDate();
+            const formattedHours = String(dominionTime.getUTCHours()).padStart(2, '0');
+            const formattedMinutes = String(dominionTime.getUTCMinutes()).padStart(2, '0');
+            document.getElementById('time-display').textContent = `Dominion Time: ${formattedHours}:${formattedMinutes} - Day ${dominionTime.getUTCDate()}`;
+        }
+
+        function hasMinLetters(text, minCount) {
+            const lettersOnly = text.replace(/[^a-zA-Z]/g, '');
+            return lettersOnly.length >= minCount;
+        }
+
+        // Funzione per salvare i dati su localStorage
+        function saveGridData() {
+            const gridContainer = document.getElementById('grid-container');
+            const cols = parseInt(document.getElementById('cols').value, 10);
+            const data = [];
+
+            const totalCells = gridContainer.children.length;
+            const numPlayerRows = (totalCells / cols) - 2;
+
+            for (let i = 0; i < numPlayerRows; i++) {
+                const playerRowStart = (i + 2) * cols;
+                const rowData = {};
+                const nameInput = gridContainer.children[playerRowStart].querySelector('input[type="text"]');
+                rowData.name = nameInput ? nameInput.value : '';
+
+                for (let j = 1; j < cols; j++) {
+                    const dayInput = gridContainer.children[playerRowStart + j].querySelector('input[type="number"]');
+                    rowData['day' + j] = dayInput ? dayInput.value : '';
+                }
+                data.push(rowData);
+            }
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        // Funzione per caricare i dati da localStorage
+        function loadGridData() {
+            const storedData = localStorage.getItem(STORAGE_KEY);
+            return storedData ? JSON.parse(storedData) : [];
+        }
+
+        function saveHeaderData() {
+            const header1Inputs = document.querySelectorAll('#header-row-1-inputs-container textarea');
+            const header2Inputs = document.querySelectorAll('#header-row-2-inputs-container input');
+            const headers = {
+                row1: [],
+                row2: []
+            };
+
+            header1Inputs.forEach(input => headers.row1.push(input.value));
+            header2Inputs.forEach(input => headers.row2.push(input.value));
+
+            localStorage.setItem(STORAGE_KEY_HEADERS, JSON.stringify(headers));
+        }
+
+        function loadHeaderData() {
+            const storedHeaders = localStorage.getItem(STORAGE_KEY_HEADERS);
+            if (storedHeaders) {
+                return JSON.parse(storedHeaders);
+            }
+            return { row1: [], row2: [] };
+        }
+
+        function checkRowCondition(playerRowIndex) {
+            const gridContainer = document.getElementById('grid-container');
+            const cols = parseInt(document.getElementById('cols').value, 10);
+            const rowStart = (playerRowIndex + 2) * cols;
+
+            const nameInput = gridContainer.children[rowStart].querySelector('input[type="text"]');
+            const hasName = nameInput ? hasMinLetters(nameInput.value, 3) : false;
+            const currentDay = getDominionDate().getUTCDate();
+
+            let isCurrentDay = false;
+
+            for (let j = 1; j < cols; j++) {
+                const cell = gridContainer.children[rowStart + j];
+                const dayInput = cell.querySelector('input[type="number"]');
+                const statusButton = cell.querySelector('.status-button');
+                const inputValue = dayInput ? parseInt(dayInput.value, 10) : NaN;
+
+                if (!isNaN(inputValue) && inputValue === currentDay) {
+                    isCurrentDay = true;
+                    if (statusButton) statusButton.textContent = '✅';
+                } else if (hasName) {
+                    if (statusButton) statusButton.textContent = '⚠️';
+                } else {
+                    if (statusButton) statusButton.textContent = '⚪️';
+                }
+
+                if (statusButton) {
+                    statusButton.style.cursor = hasName ? 'pointer' : 'default';
+                }
+            }
+
+            for (let j = 0; j < cols; j++) {
+                const cell = gridContainer.children[rowStart + j];
+                if (isCurrentDay) {
+                    cell.classList.add('highlight-row');
+                } else {
+                    cell.classList.remove('highlight-row');
+                }
+            }
+        }
+
+        function createGrid() {
+            const rows = parseInt(document.getElementById('rows').value, 10);
+            const cols = parseInt(document.getElementById('cols').value, 10);
+            const gridContainer = document.getElementById('grid-container');
+            const loadedData = loadGridData();
+            const loadedHeaders = loadHeaderData();
+
+            gridContainer.innerHTML = '';
+            gridContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
+            const header1Inputs = document.querySelectorAll('#header-row-1-inputs-container textarea');
+            const header1Names = Array.from(header1Inputs).map(input => input.value);
+            const header2Inputs = document.querySelectorAll('#header-row-2-inputs-container input');
+            const header2Names = Array.from(header2Inputs).map(input => input.value);
+
+
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('grid-cell');
+
+                    if (i === 0) {
+                        cell.classList.add('header-cell');
+                        cell.textContent = header1Names[j] || `Header Gen. ${j + 1}`;
+                    } else if (i === 1) {
+                        cell.classList.add('header-cell');
+                        cell.textContent = header2Names[j] || `Header ${j + 1}`;
+                    } else {
+                        const playerIndex = i - 2;
+                        const loadedRow = loadedData[playerIndex];
+
+                        if (j === 0) {
+                            cell.classList.add('player-name-cell');
+                            const input = document.createElement('input');
+                            input.type = 'text';
+                            input.placeholder = 'Player name';
+                            if (loadedRow && loadedRow.name) input.value = loadedRow.name;
+                            input.addEventListener('input', () => {
+                                saveGridData();
+                                checkRowCondition(playerIndex);
+                            });
+                            cell.appendChild(input);
+                        } else {
+                            cell.classList.add('day-cell');
+                            const statusButton = document.createElement('button');
+                            statusButton.type = 'button';
+                            statusButton.className = 'status-button';
+                            statusButton.textContent = '⚪️';
+                            
+                            const dayInput = document.createElement('input');
+                            dayInput.type = 'number';
+                            dayInput.min = 1;
+                            dayInput.max = 31;
+                            dayInput.placeholder = 'Day';
+                            if (loadedRow && loadedRow['day' + j]) dayInput.value = loadedRow['day' + j];
+
+                            statusButton.addEventListener('click', () => {
+                                const currentDay = getDominionDate().getUTCDate();
+                                dayInput.value = currentDay;
+                                saveGridData();
+                                checkRowCondition(playerIndex);
+                            });
+                            dayInput.addEventListener('input', () => {
+                                saveGridData();
+                                checkRowCondition(playerIndex);
+                            });
+                            cell.appendChild(statusButton);
+                            cell.appendChild(dayInput);
+                        }
+                    }
+                    gridContainer.appendChild(cell);
+                }
+            }
+
+            for (let i = 0; i < rows - 2; i++) {
+                checkRowCondition(i);
+            }
+        }
+
+        function createHeaderInputs() {
+            const cols = parseInt(document.getElementById('cols').value, 10);
+            const header1Container = document.getElementById('header-row-1-inputs-container');
+            const header2Container = document.getElementById('header-row-2-inputs-container');
+            const loadedHeaders = loadHeaderData();
+
+            header1Container.innerHTML = '';
+            header2Container.innerHTML = '';
+
+            for (let i = 0; i < cols; i++) {
+                // Header Row 1
+                const input1 = document.createElement('textarea');
+                input1.rows = 2;
+                if (i === 0) {
+                    input1.placeholder = 'Name of Event';
+                    input1.value = 'Name of Event';
+                } else {
+                    input1.placeholder = 'Last Day of Task';
+                    input1.value = 'Last Day of Task';
+                }
+                if (loadedHeaders.row1[i]) input1.value = loadedHeaders.row1[i];
+                input1.addEventListener('input', () => {
+                    saveHeaderData();
+                    createGrid();
+                });
+                header1Container.appendChild(input1);
+
+                // Header Row 2
+                const input2 = document.createElement('input');
+                input2.type = 'text';
+                if (i === 0) {
+                    input2.placeholder = 'Player Name';
+                    input2.value = 'Player Name';
+                } else {
+                    input2.placeholder = `Task ${i}`;
+                    input2.value = `Task ${i}`;
+                }
+                if (loadedHeaders.row2[i]) input2.value = loadedHeaders.row2[i];
+                input2.addEventListener('input', () => {
+                    saveHeaderData();
+                    createGrid();
+                });
+                header2Container.appendChild(input2);
+            }
+        }
+
+        document.getElementById('cols').addEventListener('change', () => {
+            createHeaderInputs();
+            createGrid();
+        });
+
+        document.getElementById('toggle-controls-btn').addEventListener('click', () => {
+            const controlsPanel = document.getElementById('controls-panel');
+            const button = document.getElementById('toggle-controls-btn');
+
+            if (controlsPanel.style.display === 'flex') {
+                controlsPanel.style.display = 'none';
+                button.textContent = 'Show Controls';
+            } else {
+                controlsPanel.style.display = 'flex';
+                button.textContent = 'Hide Controls';
+            }
+        });
+    </script>
+</body>
+</html>
