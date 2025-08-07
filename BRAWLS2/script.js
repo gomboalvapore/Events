@@ -1,22 +1,22 @@
 const STORAGE_KEY = 'guildTableData'; // Key for localStorage
 const NUM_ROWS = 28; // MODIFICATO: Da 12 a 28
 
+// --- NUOVA FUNZIONE AUSILIARIA per gestire il fuso orario ---
+function getDominionDate() {
+    const now = new Date();
+    // Sposta l'oggetto data indietro di 2 ore per allineare l'ora e il giorno
+    now.setUTCHours(now.getUTCHours() - 2);
+    return now;
+}
+
 // --- Clock Update Function ---
 function updateClock() {
-    const now = new Date();
-    const utcHours = now.getUTCHours();
-    const utcMinutes = now.getUTCMinutes();
-    const utcDay = now.getUTCDate();
+    const dominionTime = getDominionDate();
 
-    let displayHours = utcHours - 2;
-    if (displayHours < 0) {
-        displayHours += 24;
-    }
+    const formattedHours = String(dominionTime.getUTCHours()).padStart(2, '0');
+    const formattedMinutes = String(dominionTime.getUTCMinutes()).padStart(2, '0');
 
-    const formattedHours = String(displayHours).padStart(2, '0');
-    const formattedMinutes = String(utcMinutes).padStart(2, '0');
-
-    document.getElementById('current-time').textContent = `${formattedHours}:${formattedMinutes} - ${utcDay}`;
+    document.getElementById('current-time').textContent = `${formattedHours}:${formattedMinutes} - ${dominionTime.getUTCDate()}`;
 }
 
 // --- Data Handling Functions ---
@@ -63,7 +63,6 @@ function generateTableRows(numRows) {
         const cell1 = row.insertCell(0);
         const cell2 = row.insertCell(1);
 
-        // NUOVO: Assegna la classe per il Flexbox alla cella
         cell2.className = 'day-cell';
 
         // Textbox for player name (max 32 characters)
@@ -81,7 +80,7 @@ function generateTableRows(numRows) {
         syncButton.className = 'sync-button';
         syncButton.addEventListener('click', () => {
             const dayInput = cell2.querySelector('input[type="number"]');
-            const currentDay = new Date().getUTCDate();
+            const currentDay = getDominionDate().getUTCDate(); // CORRETTO
             dayInput.value = currentDay;
             checkRowCondition({ target: dayInput });
             saveTableData();
@@ -112,8 +111,8 @@ function checkRowCondition(event) {
     const inputElement = event.target;
     const row = inputElement.closest('tr');
 
-    // Using getUTCDate() for consistency with the clock
-    const currentDay = new Date().getUTCDate();
+    // CORRETTO: Usa la data di Dominion per coerenza
+    const currentDay = getDominionDate().getUTCDate();
     const inputValue = parseInt(inputElement.value, 10);
 
     if (!isNaN(inputValue) && inputValue >= 1 && inputValue <= 31 && inputValue === currentDay) {
@@ -126,6 +125,5 @@ function checkRowCondition(event) {
 // --- Initialization ---
 updateClock();
 setInterval(updateClock, 60000); // Update every 60 seconds (1 minute)
-
 
 generateTableRows(NUM_ROWS);
