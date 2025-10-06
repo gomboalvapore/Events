@@ -1,5 +1,5 @@
 const STORAGE_KEY = 'guildTableData';
-const NUM_ROWS = 36;
+const NUM_ROWS = 38;
 
 // --- NUOVA FUNZIONE AUSILIARIA per gestire il fuso orario ---
 function getDominionDate() {
@@ -152,4 +152,5 @@ setInterval(updateClock, 60000); // Update every 60 seconds (1 minute)
 
 
 generateTableRows(NUM_ROWS);
+
 
