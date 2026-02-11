@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Container Redirect</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #2b2a33;
+            color: white;
+        }
+        #countdown {
+            font-size: 4rem;
+            color: #00ddff;
+        }
+    </style>
+</head>
+<body>
+
+    <div style="text-align: center;">
+        <div id="countdown">2</div>
+        <p>Inizializzazione Container...</p>
+    </div>
+
+    <script>
+        // Impostiamo il timer a 2 secondi
+        let seconds = 2;
+        const display = document.querySelector('#countdown');
+
+        const timer = setInterval(() => {
+            seconds--;
+            display.textContent = seconds;
+
+            if (seconds <= 0) {
+                clearInterval(timer);
+                // Reindirizza a Google
+                window.location.replace("https://www.google.com");
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
